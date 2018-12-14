@@ -190,7 +190,9 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | align  | String  |  left | Specify the content alignment
 | width  | Number  |   | Specify the column width
 | sortable  | Boolean  |  false | Specify the column is sortable of not
-| cell  | Function(record):string  |   | Datatable
+| cell  | Function(record):string  |   | You can use any react component or JSX to display content in cells
+
+
 
 ## Install
 
