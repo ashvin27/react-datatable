@@ -164,32 +164,11 @@ or
 var ReactDatatable = require('@ashvin27/react-datatable')
 ```
 ## Props
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>config</td>
-            <td>Object[]</td>
-            <td>This props will used to specify datatable configuration</td>
-        </tr>
-        <tr>
-            <td>records</td>
-            <td>Object[]</td>
-            <td>This props will used to pass records/data to datatable</td>
-        </tr>
-        <tr>
-            <td>columns</td>
-            <td>Object[]</td>
-            <td>This props will used to specify datatable column configuration</td>
-        </tr>
-    </tbody>
-</table>
+| Name  | Type | Description
+| ------------- | ------------- | ------------- |
+| config  | Object[]  | This props will used to specify datatable configuration
+| records  | Object[]  | This props will used to pass records/data to datatable
+| columns  | Object[]  | This props will used to specify datatable column configuration
 
 ## Options
 | Name  | Type | default | Description
