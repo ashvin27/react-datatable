@@ -2,11 +2,11 @@ const webpack = require('webpack'),
     path = require('path');
   
 module.exports = {
-    entry: './src/index.js',
+    entry: './example/src/index.js',
     output: {
-        path: path.resolve(__dirname, 'lib'),
+        path: path.resolve(__dirname, 'example/dist'),
         filename: 'index.js',
-        libraryTarget: 'commonjs2'
+        // libraryTarget: 'commonjs2'
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -19,14 +19,15 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                include: path.resolve(__dirname, 'src'),
+                // include: path.resolve(__dirname, 'src'),
                 exclude: /(node_modules|bower_components|build)/,
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['env']
+                        presets: ['env', 'react']
                     }
                 }
+                
             },
             {
                 test: /\.css$/,
@@ -48,7 +49,7 @@ module.exports = {
             }
         ]
     },
-    externals: {
+    /*externals: {
         'react': 'commonjs react'
-    }
+    }*/
 };
