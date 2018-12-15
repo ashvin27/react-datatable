@@ -1,7 +1,6 @@
 # react-datatable
 
 [![npm version](https://img.shields.io/npm/v/@ashvin27/react-datatable.svg)](https://www.npmjs.com/package/@ashvin27/react-datatable)
-
 ReactDatatable is a component which provide ability to create multifunctional table using single component like jQuery Datatable. It's fully customizable and easy to integrate in any react component. Bootstrap compatible.
 
 ## Features
@@ -15,6 +14,12 @@ ReactDatatable is a component which provide ability to create multifunctional ta
 
 ## Example
 [https://ashvin27.github.io/react-datatable/example/](https://ashvin27.github.io/react-datatable/example/)
+
+## Installation
+With [npm](https://npmjs.org/) installed, run
+```
+npm i @ashvin27/react-datatable
+```
 
 ## Usage
 
@@ -193,13 +198,3 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | width  | Number  |   | Specify the column width
 | sortable  | Boolean  |  false | Specify the column is sortable of not
 | cell  | Function(record):string  |   | You can use any react component or JSX to display content in cells
-
-
-
-## Install
-
-With [npm](https://npmjs.org/) installed, run
-
-```
-npm i @ashvin27/react-datatable
-```
