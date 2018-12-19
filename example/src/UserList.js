@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import ReactDatatable from '../../lib/index.js';
+//import ReactDatatable from '../../lib/index.js';
+import ReactDatatable from '../../src/index.js';
 
 class UserList extends Component {
     constructor(props) {
@@ -72,6 +73,17 @@ class UserList extends Component {
             button: {
                 excel: true,
                 print: true
+            },
+            language: {
+                length_menu: "Show _MENU_ records per page",
+                filter: "Filter in records...",
+                info: "Showing _START_ to _END_ records",
+                pagination: {
+                    first: "F",
+                    previous: "P",
+                    next: "N",
+                    last: "L"
+                }
             }
         }
     }

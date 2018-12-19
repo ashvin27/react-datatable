@@ -44,6 +44,7 @@ class ReactDatatable extends Component {
         super(props);
         this.sortColumn = this.sortColumn.bind(this);
         this.numPages = this.numPages.bind(this);
+        this.lastPage = this.lastPage.bind(this);
         this.exportToExcel = this.exportToExcel.bind(this);
         this.exportToPDF = this.exportToPDF.bind(this);
         this.config = {
@@ -54,6 +55,17 @@ class ReactDatatable extends Component {
             },
             length_menu: (props.config && props.config.length_menu) ? props.config.length_menu : [10, 25, 50, 75, 100],
             no_data_text: (props.config && props.config.no_data_text) ? props.config.no_data_text : 'No rows found',
+            language: {
+                length_menu: (props.config && props.config.language && props.config.language.length_menu) ? props.config.language.length_menu : "Show _MENU_ records per page",
+                filter: (props.config && props.config.language && props.config.language.filter) ? props.config.language.filter : "Search in records...",
+                info: (props.config && props.config.language && props.config.language.info) ? props.config.language.info : "Showing _START_ to _END_ of _TOTAL_ entries",
+                pagination: {
+                    first: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.first) ? props.config.language.pagination.first : "First",
+                    previous: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.previous) ? props.config.language.pagination.previous : "Previous",
+                    next: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.next) ? props.config.language.pagination.next : "Next",
+                    last: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.last) ? props.config.language.pagination.last : "Last"
+                }
+            }
         };
         this.state = {
             sort: (props.config && props.config.sort) ? props.config.sort : { column: props.columns[0].key, order: "asc" },
@@ -106,6 +118,18 @@ class ReactDatatable extends Component {
     nextPage() {
         this.setState({
             page_number: this.state.page_number + 1
+        });
+    }
+
+    firstPage() {
+        this.setState({
+            page_number: 1
+        });
+    }
+
+    lastPage(pages) {
+        this.setState({
+            page_number: pages
         });
     }
 
@@ -196,7 +220,7 @@ class ReactDatatable extends Component {
                 let allow = false;
                 _.each(this.props.columns, (column, key) => {
                     if (record[column.key]) {
-                        allow = _.includes(record[column.key].toString(), filterValue.toString()) ? true : allow;
+                        allow = _.includes(record[column.key].toString().toLowerCase(), filterValue.toString().toLowerCase()) ? true : allow;
                     }
                 });
                 return allow;
@@ -211,6 +235,10 @@ class ReactDatatable extends Component {
         let endRecords = this.state.page_size * this.state.page_number;
         endRecords = (endRecords > totalRecords) ? totalRecords : endRecords;
 
+        let paginationInfo = this.config.language.info;
+        paginationInfo = paginationInfo.replace('_START_', (this.state.page_number == 1) ? 1 : startRecords);
+        paginationInfo = paginationInfo.replace('_END_', endRecords);
+        paginationInfo = paginationInfo.replace('_TOTAL_', totalRecords);
         return (
             <Fragment>
                 <div className="row table-head">
@@ -238,7 +266,7 @@ class ReactDatatable extends Component {
                             <input
                                 type="search"
                                 className="form-control"
-                                placeholder="Search in records..."
+                                placeholder={this.config.language.filter}
                                 onChange={this.filterRecords.bind(this)}/>
                         </div>
                         <div className="table_tools" style={style.table_tool}>
@@ -331,15 +359,21 @@ class ReactDatatable extends Component {
                 </div>
                 <div className="row table-foot">
                     <div className="col-md-6">
-                        Showing {(this.state.page_number == 1) ? 1: startRecords} to {endRecords} of {totalRecords} entries
+                        {paginationInfo}
                     </div>
                     <div className="col-md-6">
                         <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-end">
                                 <li className={(isFirst ? "disabled " : "") + "page-item"}>
                                     <button className="page-link" tabIndex="-1"
+                                        onClick={this.firstPage.bind(this)}>
+                                        {this.config.language.pagination.first}
+                                    </button>
+                                </li>
+                                <li className={(isFirst ? "disabled " : "") + "page-item"}>
+                                    <button className="page-link" tabIndex="-1"
                                         onClick={this.previousPage.bind(this)}>
-                                        Previous
+                                        {this.config.language.pagination.previous}
                                     </button>
                                 </li>
                                 <li className="page-item">
@@ -348,7 +382,13 @@ class ReactDatatable extends Component {
                                 <li className={(isLast ? "disabled " : "") + "page-item"}>
                                     <button className="page-link"
                                         onClick={this.nextPage.bind(this)}>
-                                        Next
+                                        {this.config.language.pagination.next}
+                                    </button>
+                                </li>
+                                <li className={(isLast ? "disabled " : "") + "page-item"}>
+                                    <button className="page-link" tabIndex="-1"
+                                        onClick={(e) => this.lastPage(pages)}>
+                                        {this.config.language.pagination.last}
                                     </button>
                                 </li>
                             </ul>
@@ -369,22 +409,33 @@ ReactDatatable.displayName = 'ReactDatatable';
 * Define defaultProps for this component
 */
 ReactDatatable.defaultProps = {
-	"config": {
-		"filename": "table",
-		"button": {
+    "columns": [],
+    "config": {
+        "button": {
             "excel": false,
             "print": false,
         },
+		"filename": "table",
+        "language": {
+            length_menu: "Show _MENU_ records per page",
+            filter: "Search in records...",
+            info: "Showing _START_ to _END_ of _TOTAL_ entries",
+            pagination: {
+                first: "First",
+                previous: "Previous",
+                next: "Next",
+                last: "Last"
+            }
+        },
         "length_menu": [10, 25, 50, 75, 100],
         "no_data_text": "No rows found",
+        "page_size": 10,
         "sort": { 
         	"column": "test", 
         	"order": "asc" 
         },
-        "page_size": 10
 	},
-	"records": [],
-	"columns": []
+	"records": []
 }
 
 export default ReactDatatable;
