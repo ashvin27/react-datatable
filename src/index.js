@@ -11,11 +11,15 @@ let style = {
     },
     table_size: {
         background: 'none',
-        border: 'none'
+        border: 'none',
+        padding: 0
     },
     table_size_dropdown: {
         width: '60px',
-        flex: 'none'
+        flex: 'none',
+        margin: '0px 10px',
+        display: 'inline-block',
+        float: 'none'
     },
     table_filter: {
         display: 'inline-block',
@@ -65,7 +69,11 @@ class ReactDatatable extends Component {
                     next: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.next) ? props.config.language.pagination.next : "Next",
                     last: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.last) ? props.config.language.pagination.last : "Last"
                 }
-            }
+            },
+            show_length_menu: (props.config.show_length_menu != undefined) ? props.config.show_length_menu : true,
+            show_filter: (props.config.show_filter != undefined) ? props.config.show_filter : true,
+            show_pagination: (props.config.show_pagination != undefined) ? props.config.show_pagination : true,
+            show_info: (props.config.show_info != undefined) ? props.config.show_info : true,
         };
         this.state = {
             sort: (props.config && props.config.sort) ? props.config.sort : { column: props.columns[0].key, order: "asc" },
@@ -109,27 +117,57 @@ class ReactDatatable extends Component {
         return Math.ceil(records.length / this.state.page_size);
     }
 
-    previousPage() {
+    previousPage(e) {
+        e.preventDefault();
+        let nextPage = this.state.page_number - 1,
+            pageState = {
+                previous_page: this.state.page_number,
+                current_page: nextPage
+            };
         this.setState({
-            page_number: this.state.page_number - 1
+            page_number: nextPage
+        }, () => { 
+            this.props.onPageChange(pageState);
         });
     }
 
-    nextPage() {
+    nextPage(e) {
+        e.preventDefault();
+        let nextPage = this.state.page_number + 1,
+            pageState = {
+                previous_page: this.state.page_number,
+                current_page: nextPage
+            };
         this.setState({
-            page_number: this.state.page_number + 1
+            page_number: nextPage
+        }, () => { 
+            this.props.onPageChange(pageState);
         });
     }
 
-    firstPage() {
+    firstPage(e) {
+        e.preventDefault();
+        let pageState = {
+            previous_page: this.state.page_number,
+            current_page: 1
+        };
         this.setState({
             page_number: 1
+        }, () => { 
+            this.props.onPageChange(pageState);
         });
     }
 
-    lastPage(pages) {
+    lastPage(e, pages) {
+        e.preventDefault();
+        let pageState = {
+            previous_page: this.state.page_number,
+            current_page: pages
+        };
         this.setState({
             page_number: pages
+        }, () => { 
+            this.props.onPageChange(pageState);
         });
     }
 
@@ -235,40 +273,49 @@ class ReactDatatable extends Component {
         let endRecords = this.state.page_size * this.state.page_number;
         endRecords = (endRecords > totalRecords) ? totalRecords : endRecords;
 
+        let lengthMenuText = this.config.language.length_menu;
+        lengthMenuText = lengthMenuText.split('_MENU_');
         let paginationInfo = this.config.language.info;
         paginationInfo = paginationInfo.replace('_START_', (this.state.page_number == 1) ? 1 : startRecords);
         paginationInfo = paginationInfo.replace('_END_', endRecords);
         paginationInfo = paginationInfo.replace('_TOTAL_', totalRecords);
         return (
-            <Fragment>
+            <div className="as-react-table">
                 <div className="row table-head">
                     <div className="col-md-6">
-                        <div className="input-group">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" style={style.table_size}>Show</span>
+                        {(this.config.show_length_menu) ? (
+                            <div className="input-group asrt-page-length">
+                                <div className="input-group-addon input-group-prepend">
+                                    <span className="input-group-text" style={style.table_size}>
+                                        {(lengthMenuText[0]) ? lengthMenuText[0] : ''}
+                                    </span>
+                                </div>
+                                {(_.includes(this.config.language.length_menu, '_MENU_')) ? (
+                                    <select type="text" className="form-control" style={style.table_size_dropdown}
+                                    onChange={this.changePageSize.bind(this)}>
+                                        {this.config.length_menu.map((value, key) => { 
+                                            return (<option key={value}>{value}</option>);
+                                        })}
+                                        <option value={this.props.records.length}>All</option>
+                                    </select>
+                                ) : null}
+                                <div className="input-group-addon input-group-prepend">
+                                    <span className="input-group-text" style={style.table_size}>
+                                        {(lengthMenuText[1]) ? lengthMenuText[1] : ''}
+                                    </span>
+                                </div>
                             </div>
-                            <select type="text" className="form-control" style={style.table_size_dropdown}
-                                onChange={this.changePageSize.bind(this)}>
-                                {
-                                    this.config.length_menu.map((value, key) => { 
-                                        return (<option key={value}>{value}</option>);
-                                    })
-                                }
-                                <option value={this.props.records.length}>All</option>
-                            </select>
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" style={style.table_size}>records per page</span>
-                            </div>
-                        </div>
+                        ) : null}
                     </div>
                     <div className="col-md-6 float-right text-right">
-                        <div className="table_filter" style={style.table_filter}>
-                            <input
-                                type="search"
-                                className="form-control"
-                                placeholder={this.config.language.filter}
-                                onChange={this.filterRecords.bind(this)}/>
-                        </div>
+                        {(this.config.show_filter) ? (
+                            <div className="table_filter" style={style.table_filter}>
+                                <input
+                                    type="search"
+                                    className="form-control"
+                                    placeholder={this.config.language.filter}
+                                    onChange={this.filterRecords.bind(this)} />
+                            </div>) : null}
                         <div className="table_tools" style={style.table_tool}>
                             {(this.config.button.excel) ? (
                                 <button className="btn btn-primary buttons-excel"
@@ -290,7 +337,7 @@ class ReactDatatable extends Component {
                                     style={style.table_tool_btn}
                                     onClick={this.exportToPDF}>
                                     <span>
-                                    <i className="fa fa-print" aria-hidden="true"></i>
+                                    <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
                                     </span>
                                 </button>
                             ) : null}
@@ -359,43 +406,44 @@ class ReactDatatable extends Component {
                 </div>
                 <div className="row table-foot">
                     <div className="col-md-6">
-                        {paginationInfo}
+                        {(this.config.show_info) ? paginationInfo : null}
                     </div>
-                    <div className="col-md-6">
-                        <nav aria-label="Page navigation example">
-                            <ul className="pagination justify-content-end">
-                                <li className={(isFirst ? "disabled " : "") + "page-item"}>
-                                    <button className="page-link" tabIndex="-1"
-                                        onClick={this.firstPage.bind(this)}>
-                                        {this.config.language.pagination.first}
-                                    </button>
-                                </li>
-                                <li className={(isFirst ? "disabled " : "") + "page-item"}>
-                                    <button className="page-link" tabIndex="-1"
-                                        onClick={this.previousPage.bind(this)}>
-                                        {this.config.language.pagination.previous}
-                                    </button>
-                                </li>
-                                <li className="page-item">
-                                    <a className="page-link">{this.state.page_number}</a>
-                                </li>
-                                <li className={(isLast ? "disabled " : "") + "page-item"}>
-                                    <button className="page-link"
-                                        onClick={this.nextPage.bind(this)}>
-                                        {this.config.language.pagination.next}
-                                    </button>
-                                </li>
-                                <li className={(isLast ? "disabled " : "") + "page-item"}>
-                                    <button className="page-link" tabIndex="-1"
-                                        onClick={(e) => this.lastPage(pages)}>
-                                        {this.config.language.pagination.last}
-                                    </button>
-                                </li>
-                            </ul>
-                        </nav>
+                    <div className="col-md-6 pull-right text-right">
+                        {(this.config.show_pagination) ? (
+                            <nav aria-label="Page navigation" className="pull-right">
+                                <ul className="pagination justify-content-end asrt-pagination">
+                                    <li className={(isFirst ? "disabled " : "") + "page-item"}>
+                                        <a href='#' className="page-link" tabIndex="-1"
+                                            onClick={this.firstPage.bind(this)}>
+                                            {this.config.language.pagination.first}
+                                        </a>
+                                    </li>
+                                    <li className={(isFirst ? "disabled " : "") + "page-item"}>
+                                        <a href='#' className="page-link" tabIndex="-1"
+                                            onClick={this.previousPage.bind(this)}>
+                                            {this.config.language.pagination.previous}
+                                        </a>
+                                    </li>
+                                    <li className="page-item">
+                                        <a className="page-link">{this.state.page_number}</a>
+                                    </li>
+                                    <li className={(isLast ? "disabled " : "") + "page-item"}>
+                                        <a href='#' className="page-link"
+                                            onClick={this.nextPage.bind(this)}>
+                                            {this.config.language.pagination.next}
+                                        </a>
+                                    </li>
+                                    <li className={(isLast ? "disabled " : "") + "page-item"}>
+                                        <a href='#' className="page-link" tabIndex="-1"
+                                            onClick={(e) => this.lastPage(e, pages)}>
+                                            {this.config.language.pagination.last}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>) : null}
                     </div>
                 </div>
-            </Fragment>
+            </div>
         )
     }
 }
@@ -434,8 +482,13 @@ ReactDatatable.defaultProps = {
         	"column": "test", 
         	"order": "asc" 
         },
+        show_length_menu: true,
+        show_filter: true,
+        show_pagination: true,
+        show_info: true,
 	},
-	"records": []
+    "records": [],
+    onPageChange: () => { }
 }
 
 export default ReactDatatable;

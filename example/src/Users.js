@@ -16,7 +16,7 @@ class Users extends Component {
     render() {
         return (
             <div className="container">
-                <h2>Restaurants:</h2>
+                {/* <h2>Restaurants:</h2> */}
                 <UserList users={this.state.users}/>
             </div>
         )

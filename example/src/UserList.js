@@ -52,13 +52,13 @@ class UserList extends Component {
                     return (
                         <Fragment>
                             <button
-                                className="tblActionBtn action-icon btn btn-primary btn-sm"
+                                className="btn btn-primary btn-sm"
                                 onClick={() => this.editUser(record)}
                                 style={{marginRight: '5px'}}>
-                                <i className="fa fa-edit"></i>
+                                <i className="glyphicon glyphicon-edit fa fa-edit"></i>
                             </button>
-                            <button className="tblActionBtn action-icon btn btn-danger btn-sm" onClick={() => this.deleteUser(record)}>
-                                <i className="fa fa-trash"></i>
+                            <button className="btn btn-danger btn-sm" onClick={() => this.deleteUser(record)}>
+                                <i className="glyphicon glyphicon-trash fa fa-trash"></i>
                             </button>
                         </Fragment>
                     );
@@ -75,16 +75,20 @@ class UserList extends Component {
                 print: true
             },
             language: {
-                length_menu: "Show _MENU_ records per page",
+                length_menu: "Show _MENU_ result per page",
                 filter: "Filter in records...",
-                info: "Showing _START_ to _END_ records",
+                info: "Showing _START_ to _END_ of _TOTAL_ records",
                 pagination: {
-                    first: "F",
-                    previous: "P",
-                    next: "N",
-                    last: "L"
+                    first: "First",
+                    previous: "Previous",
+                    next: "Next",
+                    last: "Last"
                 }
-            }
+            },
+            show_length_menu: true,
+            show_filter: true,
+            show_pagination: true,
+            show_info: true,
         }
     }
 
@@ -96,6 +100,10 @@ class UserList extends Component {
         console.log("Delete User", user);
     }
 
+    pageChange(pageData) {
+        console.log("OnPageChange", pageData);
+    }
+
     render() {
         return (
             <div>
@@ -103,6 +111,7 @@ class UserList extends Component {
                     config={this.config}
                     records={this.props.users}
                     columns={this.columns}
+                    onPageChange={this.pageChange.bind(this)}
                 />
             </div>
         )
