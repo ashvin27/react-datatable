@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import _ from 'lodash';
-import { json2excel } from 'js2excel';
+import ExcellentExport from './excellentexport.js';
 import './style.css';
 import upArrow from './up-arrow.png';
 import downArrow from './down-arrow.png';
@@ -45,45 +45,46 @@ let style = {
 class ReactDatatable extends Component {
 
     constructor(props) {
-        super(props);
-        this.sortColumn = this.sortColumn.bind(this);
-        this.numPages = this.numPages.bind(this);
-        this.exportToExcel = this.exportToExcel.bind(this);
-        this.exportToPDF = this.exportToPDF.bind(this);
-        this.onTableChange = this.onTableChange.bind(this);
-        this.filterRecords = this.filterRecords.bind(this);
-        this.config = {
-          button: {
-            excel: (props.config && props.config.button && props.config.button.excel) ? props.config.button.excel : false,
-            print: (props.config && props.config.button && props.config.button.print) ? props.config.button.print : false,
-          },
-          filename: (props.config && props.config.filename) ? props.config.filename : "table",
-          language: {
-            length_menu: (props.config && props.config.language && props.config.language.length_menu) ? props.config.language.length_menu : "Show _MENU_ records per page",
-            filter: (props.config && props.config.language && props.config.language.filter) ? props.config.language.filter : "Search in records...",
-            info: (props.config && props.config.language && props.config.language.info) ? props.config.language.info : "Showing _START_ to _END_ of _TOTAL_ entries",
-            pagination: {
-              first: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.first) ? props.config.language.pagination.first : "First",
-              previous: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.previous) ? props.config.language.pagination.previous : "Previous",
-              next: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.next) ? props.config.language.pagination.next : "Next",
-              last: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.last) ? props.config.language.pagination.last : "Last"
-            }
-          },
-          length_menu: (props.config && props.config.length_menu) ? props.config.length_menu : [10, 25, 50, 75, 100],
-          no_data_text: (props.config && props.config.no_data_text) ? props.config.no_data_text : 'No rows found',
-          show_length_menu: (props.config.show_length_menu != undefined) ? props.config.show_length_menu : true,
-          show_filter: (props.config.show_filter != undefined) ? props.config.show_filter : true,
-          show_pagination: (props.config.show_pagination != undefined) ? props.config.show_pagination : true,
-          show_info: (props.config.show_info != undefined) ? props.config.show_info : true,
-          show_first: (props.config.show_first != undefined) ? props.config.show_first : true,
-          show_last: (props.config.show_last != undefined) ? props.config.show_last : true,
-        };
-        this.state = {
-          filter_value: "",
-          page_size: (props.config.page_size) ? props.config.page_size : 10,
-          page_number: 1,
-          sort: (props.config && props.config.sort) ? props.config.sort : { column: props.columns[0].key, order: "asc" }
-        };
+      super(props);
+      this.exportExcelRef = React.createRef();
+      this.sortColumn = this.sortColumn.bind(this);
+      this.numPages = this.numPages.bind(this);
+      this.exportToExcel = this.exportToExcel.bind(this);
+      this.exportToPDF = this.exportToPDF.bind(this);
+      this.onTableChange = this.onTableChange.bind(this);
+      this.filterRecords = this.filterRecords.bind(this);
+      this.config = {
+        button: {
+          excel: (props.config && props.config.button && props.config.button.excel) ? props.config.button.excel : false,
+          print: (props.config && props.config.button && props.config.button.print) ? props.config.button.print : false,
+        },
+        filename: (props.config && props.config.filename) ? props.config.filename : "table",
+        language: {
+          length_menu: (props.config && props.config.language && props.config.language.length_menu) ? props.config.language.length_menu : "Show _MENU_ records per page",
+          filter: (props.config && props.config.language && props.config.language.filter) ? props.config.language.filter : "Search in records...",
+          info: (props.config && props.config.language && props.config.language.info) ? props.config.language.info : "Showing _START_ to _END_ of _TOTAL_ entries",
+          pagination: {
+            first: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.first) ? props.config.language.pagination.first : "First",
+            previous: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.previous) ? props.config.language.pagination.previous : "Previous",
+            next: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.next) ? props.config.language.pagination.next : "Next",
+            last: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.last) ? props.config.language.pagination.last : "Last"
+          }
+        },
+        length_menu: (props.config && props.config.length_menu) ? props.config.length_menu : [10, 25, 50, 75, 100],
+        no_data_text: (props.config && props.config.no_data_text) ? props.config.no_data_text : 'No rows found',
+        show_length_menu: (props.config.show_length_menu != undefined) ? props.config.show_length_menu : true,
+        show_filter: (props.config.show_filter != undefined) ? props.config.show_filter : true,
+        show_pagination: (props.config.show_pagination != undefined) ? props.config.show_pagination : true,
+        show_info: (props.config.show_info != undefined) ? props.config.show_info : true,
+        show_first: (props.config.show_first != undefined) ? props.config.show_first : true,
+        show_last: (props.config.show_last != undefined) ? props.config.show_last : true,
+      };
+      this.state = {
+        filter_value: "",
+        page_size: (props.config.page_size) ? props.config.page_size : 10,
+        page_number: 1,
+        sort: (props.config && props.config.sort) ? props.config.sort : { column: props.columns[0].key, order: "asc" }
+      };
     }
 
     filterRecords(e) {
@@ -204,24 +205,35 @@ class ReactDatatable extends Component {
     }
 
     exportToExcel() {
-        let excelData = [];
-        for (let i in this.props.records) {
-            let record = this.props.records[i],
-                newRecord = {};
-            for (let column of this.props.columns) {
-                newRecord[column.text] = record[column.key];
-            }
-            excelData.push(newRecord);
+      let excelData = [];
+      let newRecord = [];
+      // add columns in sheet array
+      for (let column of this.props.columns) {
+          newRecord.push(column.text);
+      }
+      excelData.push(newRecord);
+
+      // add data rows in sheet array
+      for (let i in this.props.records) {
+          let record = this.props.records[i],
+              newRecord = [];
+          for (let column of this.props.columns) {
+              newRecord.push(record[column.key]);
+          }
+          excelData.push(newRecord);
+      }
+      let format = 'xlsx';
+      ExcellentExport.convert({
+        anchor: this.props.id + "xlsx-export-anchor",
+        filename: this.config.filename,
+        format: format
+      }, [{
+        name: this.config.filename,
+        from: {
+            array: excelData
         }
-        try {
-            json2excel({
-                excelData,
-                name: this.config.filename,
-                formateDate: 'yyyy/mm/dd'
-            });
-        } catch (e) {
-            console.error('export error');
-        }
+        }]);
+      this.exportExcelRef.current.click();
     }
 
     exportToPDF() {
@@ -358,7 +370,8 @@ class ReactDatatable extends Component {
                         onChange={this.filterRecords.bind(this)} />
                     </div>) : null}
                   <div className="table_tools" style={style.table_tool}>
-                    {(this.config.button.excel) ? (
+                  {(this.config.button.excel) ? (
+                    <Fragment>
                       <button className="btn btn-primary buttons-excel"
                         tabIndex="0"
                         aria-controls="configuration_tbl"
@@ -369,6 +382,8 @@ class ReactDatatable extends Component {
                           <i className="fa fa-file-excel" aria-hidden="true"></i>
                         </span>
                       </button>
+                      <a href="#" ref={this.exportExcelRef} id={this.props.id + "xlsx-export-anchor"}></a>
+                    </Fragment>
                     ) : null}
                     {(this.config.button.print) ? (
                       <button className="btn btn-primary buttons-pdf"
