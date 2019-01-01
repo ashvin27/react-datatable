@@ -7,7 +7,7 @@ ReactDatatable is a component which provide ability to create multifunctional ta
 ## Features
 * Lightweight
 * Fully customizable (JSX, templates, state, styles, callbacks)
-* Client-side & pagination
+* Client-side & Server Side Pagination
 * Multi-sort
 * Filters
 * Minimal design
@@ -174,28 +174,38 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 ## Props
 | Name  | Type | Description
 | ------------- | ------------- | ------------- |
-| config  | Object[]  | This props will used to specify datatable configuration
-| records  | Object[]  | This props will used to pass records/data to datatable
+| className  | String  | Datatable additional class, use to appy additional styling on table
 | columns  | Object[]  | This props will used to specify datatable column configuration
+| config  | Object[]  | This props will used to specify datatable configuration
+| dynamic |  boolean |  This props will used to specify the table data will server side
+| id  | String  | Identifier of datatable
+| records  | Object[]  | This props will used to pass records/data to datatable
+| total_record | Number | This props will used to specify the total records in case of table data is server side.
+| onChange | Funtion(Object) | This method will call on table actions(page change, sorting, filtering, page length change)
+| onRowClicked | Funtion(Object) | This method will call when user click on a row, return row object.
 
 ## Options
 | Name  | Type | default | Description
 | ------------- | ------------- | ------------- | ------------- |
-| className  | String  |   | Datatable additional class, use to appy additional styling on table
-| id  | String  |   | Identifier of datatable
-| page_size  | Number  | 10  | Specify the page length (number of rows per page)
-| length_menu  | Array[]  | [10, 25, 50, 75, 100]  | Specify the options in the page length `select` list.
+| button  | Object[]  | { excel: false, print: false, csv: false } | Use to enable/disable export buttons(Excel, CSV, Print). By default buttons are disabled.
 | filename  | String  | "table" | Specify the export filename
-| button  | Object[]  | { excel: false, print: false } | Use to enable/disable export buttons. By default buttons are disabled.
+| length_menu  | Array[]  | [10, 25, 50, 75, 100]  | Specify the options in the page length `select` list.
+| page_size  | Number  | 10  | Specify the page length (number of rows per page)
 | sort  | Object[]  | { column: "", order: "asc" } | Initial sorting order to apply to the datatable
+| show_filter | boolean | true | use to specify either show or hide filter option
+| show_first | boolean | true | use to specify either show or hide pagination first button
+| show_info | boolean | true |  use to specify either show or hide pagination info
+| show_last | boolean | true | use to specify either show or hide pagination last button
+| show_length_menu | boolean | true | use to specify either show or hide page length menu
+| show_pagination | boolean | true | use to specify either show or hide pagination
 
 ## Columns
 | Name  | Type | default | Description
 | ------------- | ------------- | ------------- | ------------- |
-| key  | String  |   | Specify the key of record which value will display in table cell
-| text  | String  |   | Spcify the table column text
-| className  | String  |   | Table column additional class fo styling
 | align  | String  |  left | Specify the content alignment
-| width  | Number  |   | Specify the column width
+| className  | String  |   | Table column additional class fo styling
+| key  | String  |   | Specify the key of record which value will display in table cell
 | sortable  | Boolean  |  false | Specify the column is sortable of not
-| cell  | Function(record):string  |   | You can use any react component or JSX to display content in cells
+| text  | String  |   | Spcify the table column text
+| width  | Number  |   | Specify the column width
+| cell  | Function(record, index):string  |   | You can use any react component or JSX to display content in cells
