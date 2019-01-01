@@ -177,9 +177,9 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | className  | String  | Datatable additional class, use to appy additional styling on table
 | columns  | Object[]  | This props will used to specify datatable column configuration
 | config  | Object[]  | This props will used to specify datatable configuration
-| dynamic |  boolean |  This props will used to specify the table data will server side
+| dynamic |  boolean |  This props will used to specify the table data will be server side or static
 | id  | String  | Identifier of datatable
-| records  | Object[]  | This props will used to pass records/data to datatable
+| records  | Object[]  | This props will used to table records
 | total_record | Number | This props will used to specify the total records in case of table data is server side.
 | onChange | Funtion(Object) | This method will call on table actions(page change, sorting, filtering, page length change)
 | onRowClicked | Funtion(Object) | This method will call when user click on a row, return row object.
