@@ -10,9 +10,9 @@
     },
     "license": "MIT",
     "homepage": "https://ashvin27.github.io/react-datatable/",
-    "bugs": { 
-        "url" : "https://github.com/ashvin27/react-datatable/issues",
-        "email" : "patelash212@gmail.com"
+    "bugs": {
+        "url": "https://github.com/ashvin27/react-datatable/issues",
+        "email": "patelash212@gmail.com"
     },
     "repository": {
         "type": "git",
@@ -27,12 +27,10 @@
     },
     "dependencies": {
         "js2excel": "^1.0.1",
-        "lodash": "^4.17.11"
     },
     "peerDependencies": {
         "react": "^16.0.0",
         "react-dom": "^16.0.0",
-        "js2excel": "^1.0.1",
         "lodash": "^4.17.11"
     },
     "devDependencies": {
