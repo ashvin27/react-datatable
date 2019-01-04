@@ -307,7 +307,7 @@ class ReactDatatable extends Component {
     win.close();
   }
 
-  convertToCSV = (objArray) => {
+  convertToCSV(objArray){
     let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
     let str = '';  
     for (let i = 0; i < array.length; i++) {
@@ -321,7 +321,7 @@ class ReactDatatable extends Component {
     return str;
   }
 
-  exportToCSV = (headers, items, fileTitle) => {
+  exportToCSV(headers, items, fileTitle){
     var headers = {};
     // add columns in sheet array
     for (let column of this.props.columns) {
