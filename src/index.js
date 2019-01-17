@@ -58,6 +58,7 @@ class ReactDatatable extends Component {
     this.numPages = this.numPages.bind(this);
     this.exportToExcel = this.exportToExcel.bind(this);
     this.exportToPDF = this.exportToPDF.bind(this);
+    this.exportToCSV = this.exportToCSV.bind(this);
     this.onChange = this.onChange.bind(this);
     this.filterRecords = this.filterRecords.bind(this);
     this.filterData = this.filterData.bind(this);
