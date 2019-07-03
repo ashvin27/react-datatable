@@ -1,5 +1,5 @@
 /**
- * This is the React Component for ReactDatatabsle
+ * This is the React Component for ReactDatatable
  *
  * @package        ReactDatatable
  * @author         Ashvin Patel
