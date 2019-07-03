@@ -22,7 +22,7 @@ let style = {
     padding: 0
   },
   table_size_dropdown: {
-    width: '60px',
+    width: '70px',
     flex: 'none',
     margin: '0px 10px',
     display: 'inline-block',
