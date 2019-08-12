@@ -400,7 +400,6 @@ class ReactDatatable extends Component {
       let records = _.orderBy(this.props.records, (o) => {
         let colVal = o[this.state.sort.column];
         let typeofColVal = typeof colVal;
-        console.log(typeofColVal, colVal)
         if (typeofColVal == "string") {
           if (isNaN(colVal)) {
             return new String(colVal.toLowerCase());
