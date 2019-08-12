@@ -396,7 +396,21 @@ class ReactDatatable extends Component {
   render() {
     let filterRecords, totalRecords, pages, isFirst, isLast;
     if(this.props.dynamic === false){
-      let records = _.orderBy(this.props.records, [this.state.sort.column], [this.state.sort.order]),
+      // let records = _.orderBy(this.props.records, [{ [this.state.sort.column]: Number }], [this.state.sort.order]),
+      let records = _.orderBy(this.props.records, (o) => {
+        let colVal = o[this.state.sort.column];
+        let typeofColVal = typeof colVal;
+        console.log(typeofColVal, colVal)
+        if (typeofColVal == "string") {
+          if (isNaN(colVal)) {
+            return new String(colVal.toLowerCase());
+          } else {
+            return new Number(colVal);
+          }
+        }else if (typeofColVal == "number") {
+          return new Number(colVal);
+        }
+      }, [this.state.sort.order]),
         filterValue = this.state.filter_value;
       filterRecords = records;
       if (filterValue) {
