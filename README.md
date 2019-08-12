@@ -181,8 +181,8 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | id  | String  | Identifier of datatable
 | records  | Object[]  | This props will used to table records
 | total_record | Number | This props will used to specify the total records in case of table data is server side.
-| onChange | Funtion(Object) | This method will call on table actions(page change, sorting, filtering, page length change)
-| onRowClicked | Funtion(Object) | This method will call when user click on a row, return row object.
+| onChange | Function(Object) | This method will call on table actions(page change, sorting, filtering, page length change)
+| onRowClicked | Function(Object) | This method will call when user click on a row, return row object.
 
 ## Options
 | Name  | Type | default | Description
@@ -192,12 +192,12 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | length_menu  | Array[]  | [10, 25, 50, 75, 100]  | Specify the options in the page length `select` list.
 | page_size  | Number  | 10  | Specify the page length (number of rows per page)
 | sort  | Object[]  | { column: "", order: "asc" } | Initial sorting order to apply to the datatable
-| show_filter | boolean | true | use to specify either show or hide filter option
-| show_first | boolean | true | use to specify either show or hide pagination first button
-| show_info | boolean | true |  use to specify either show or hide pagination info
-| show_last | boolean | true | use to specify either show or hide pagination last button
-| show_length_menu | boolean | true | use to specify either show or hide page length menu
-| show_pagination | boolean | true | use to specify either show or hide pagination
+| show_filter | boolean | true | Use to specify either show or hide filter option
+| show_first | boolean | true | Use to specify either show or hide pagination first button
+| show_info | boolean | true |  Use to specify either show or hide pagination info
+| show_last | boolean | true | Use to specify either show or hide pagination last button
+| show_length_menu | boolean | true | Use to specify either show or hide page length menu
+| show_pagination | boolean | true | Use to specify either show or hide pagination
 
 ## Columns
 | Name  | Type | default | Description
@@ -206,6 +206,6 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | className  | String  |   | Table column additional class fo styling
 | key  | String  |   | Specify the key of record which value will display in table cell
 | sortable  | Boolean  |  false | Specify the column is sortable of not
-| text  | String  |   | Spcify the table column text
+| text  | String  |   | Specify the table column text
 | width  | Number  |   | Specify the column width
 | cell  | Function(record, index):string  |   | You can use any react component or JSX to display content in cells
