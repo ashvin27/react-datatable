@@ -175,6 +175,7 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | Name  | Type | Description
 | ------------- | ------------- | ------------- |
 | className  | String  | Datatable additional class, use to appy additional styling on table
+| tHeadClassName | String | Additional class to be put on the "thead"  of the table
 | columns  | Object[]  | This props will used to specify datatable column configuration
 | config  | Object[]  | This props will used to specify datatable configuration
 | dynamic |  boolean |  This props will used to specify the table data will be server side or static
@@ -203,7 +204,8 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | Name  | Type | default | Description
 | ------------- | ------------- | ------------- | ------------- |
 | align  | String  |  left | Specify the content alignment
-| className  | String  |   | Table column additional class fo styling
+| className  | String  |   | Table column additional class fo styling (only for data columns use TrOnlyClassName for headers)
+| TrOnlyClassName | String |  | Header column additional class ( only for headers ) WILL NOT automatically take className value if not set
 | key  | String  |   | Specify the key of record which value will display in table cell
 | sortable  | Boolean  |  false | Specify the column is sortable of not
 | text  | String  |   | Specify the table column text
