@@ -8,9 +8,10 @@ class UserList extends Component {
         this.deleteUser = this.deleteUser.bind(this);
         this.columns = [
             {
-                key: "name", 
+                key: "name",
                 text: "Name",
                 className: "name",
+                TrOnlyClassName:"aClass",
                 align: "left",
                 sortable: true,
             },
@@ -48,7 +49,7 @@ class UserList extends Component {
                 width: 100,
                 align: "left",
                 sortable: false,
-                cell: record => { 
+                cell: record => {
                     return (
                         <Fragment>
                             <button

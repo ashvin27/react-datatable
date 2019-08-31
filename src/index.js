@@ -254,7 +254,7 @@ class ReactDatatable extends Component {
       worksheet: this.config.filename || 'Worksheet',
       table: sTable
     },
-    href = uri + base64(format(template, ctx));     
+    href = uri + base64(format(template, ctx));
     let anc = document.createElement('a');
     anc.setAttribute('href', href);
     anc.setAttribute('download', this.config.filename + '.xlsx');
@@ -310,7 +310,7 @@ class ReactDatatable extends Component {
 
   convertToCSV(objArray){
     let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-    let str = '';  
+    let str = '';
     for (let i = 0; i < array.length; i++) {
       let line = '';
       for (let index in array[i]) {
@@ -347,11 +347,11 @@ class ReactDatatable extends Component {
     }
     if (headers) {
       records.unshift(headers);
-    }      
+    }
     // Convert Object to JSON
-    let jsonObject = JSON.stringify(records);  
-    let csv = this.convertToCSV(jsonObject);  
-    let exportedFilenmae = this.config.filename + '.csv' || 'export.csv';  
+    let jsonObject = JSON.stringify(records);
+    let csv = this.convertToCSV(jsonObject);
+    let exportedFilenmae = this.config.filename + '.csv' || 'export.csv';
     let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     if (navigator.msSaveBlob) { // IE 10+
       navigator.msSaveBlob(blob, exportedFilenmae);
@@ -438,88 +438,149 @@ class ReactDatatable extends Component {
     paginationInfo = paginationInfo.replace('_START_', (this.state.page_number == 1) ? 1 : startRecords);
     paginationInfo = paginationInfo.replace('_END_', endRecords);
     paginationInfo = paginationInfo.replace('_TOTAL_', totalRecords);
-
-    return (
-      <div className="as-react-table" id={(this.props.id) ? this.props.id + "-container" : ""}>
-        <div className="row table-head asrt-table-head" id={(this.props.id) ? this.props.id + "-table-head" : ""}>
-          <div className="col-md-6">
-            {(this.config.show_length_menu) ? (
-              <div className="input-group asrt-page-length">
-                <div className="input-group-addon input-group-prepend">
+    function showHeader(){
+      if(this){
+          if(this.config.show_length_menu==true || this.config.show_filter==true ||this.config.button.excel==true || this.config.button.csv==true || this.config.button.print==true){
+              return (
+                  <div className="row table-head asrt-table-head" id={(this.props.id) ? this.props.id + "-table-head" : ""}>
+                      <div className="col-md-6">
+                          {(this.config.show_length_menu) ? (
+                              <div className="input-group asrt-page-length">
+                                  <div className="input-group-addon input-group-prepend">
                   <span className="input-group-text" style={style.table_size}>
                     {(lengthMenuText[0]) ? lengthMenuText[0] : ''}
                   </span>
-                </div>
-                {(_.includes(this.config.language.length_menu, '_MENU_')) ? (
-                  <select type="text" className="form-control" style={style.table_size_dropdown}
-                    onChange={this.changePageSize.bind(this)}>
-                    {this.config.length_menu.map((value, key) => {
-                      return (<option key={value}>{value}</option>);
-                    })}
-                    <option value={this.props.records.length}>All</option>
-                  </select>
-                ) : null}
-                <div className="input-group-addon input-group-prepend">
+                                  </div>
+                                  {(_.includes(this.config.language.length_menu, '_MENU_')) ? (
+                                      <select type="text" className="form-control" style={style.table_size_dropdown}
+                                              onChange={this.changePageSize.bind(this)}>
+                                          {this.config.length_menu.map((value, key) => {
+                                              return (<option key={value}>{value}</option>);
+                                          })}
+                                          <option value={this.props.records.length}>All</option>
+                                      </select>
+                                  ) : null}
+                                  <div className="input-group-addon input-group-prepend">
                   <span className="input-group-text" style={style.table_size}>
                     {(lengthMenuText[1]) ? lengthMenuText[1] : ''}
                   </span>
-                </div>
-              </div>
-            ) : null}
-          </div>
-          <div className="col-md-6 float-right text-right">
-            {(this.config.show_filter) ? (
-              <div className="table_filter" style={style.table_filter}>
-                <input
-                  type="search"
-                  className="form-control"
-                  placeholder={this.config.language.filter}
-                  onChange={this.filterRecords.bind(this)} />
-              </div>) : null}
-            <div className="table_tools" style={style.table_tool}>
-            {(this.config.button.excel) ? (
-              <button className="btn btn-primary buttons-excel"
-                tabIndex="0"
-                aria-controls="configuration_tbl"
-                title="Export to Excel"
-                style={style.table_tool_btn}
-                onClick={this.exportToExcel}>
+                                  </div>
+                              </div>
+                          ) : null}
+                      </div>
+                      <div className="col-md-6 float-right text-right">
+                          {(this.config.show_filter) ? (
+                              <div className="table_filter" style={style.table_filter}>
+                                  <input
+                                      type="search"
+                                      className="form-control"
+                                      placeholder={this.config.language.filter}
+                                      onChange={this.filterRecords.bind(this)} />
+                              </div>) : null}
+                          <div className="table_tools" style={style.table_tool}>
+                              {(this.config.button.excel) ? (
+                                  <button className="btn btn-primary buttons-excel"
+                                          tabIndex="0"
+                                          aria-controls="configuration_tbl"
+                                          title="Export to Excel"
+                                          style={style.table_tool_btn}
+                                          onClick={this.exportToExcel}>
                 <span>
                   <i className="fa fa-file-excel-o" aria-hidden="true"></i>
                 </span>
-              </button>
-              ) : null}
-            {(this.config.button.csv) ? (
-              <button className="btn btn-primary buttons-csv"
-                tabIndex="0"
-                aria-controls="configuration_tbl"
-                title="Export to CSV"
-                style={style.table_tool_btn}
-                onClick={this.exportToCSV}>
+                                  </button>
+                              ) : null}
+                              {(this.config.button.csv) ? (
+                                  <button className="btn btn-primary buttons-csv"
+                                          tabIndex="0"
+                                          aria-controls="configuration_tbl"
+                                          title="Export to CSV"
+                                          style={style.table_tool_btn}
+                                          onClick={this.exportToCSV}>
                 <span>
                   <i className="fa fa-file-text-o" aria-hidden="true"></i>
                 </span>
-              </button>
-              ) : null}
-              {(this.config.button.print) ? (
-                <button className="btn btn-primary buttons-pdf"
-                  tabIndex="0"
-                  aria-controls="configuration_tbl"
-                  title="Export to PDF"
-                  style={style.table_tool_btn}
-                  onClick={this.exportToPDF}>
+                                  </button>
+                              ) : null}
+                              {(this.config.button.print) ? (
+                                  <button className="btn btn-primary buttons-pdf"
+                                          tabIndex="0"
+                                          aria-controls="configuration_tbl"
+                                          title="Export to PDF"
+                                          style={style.table_tool_btn}
+                                          onClick={this.exportToPDF}>
                   <span>
                     <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
                   </span>
-                </button>
-              ) : null}
-            </div>
-          </div>
-        </div>
+                                  </button>
+                              ) : null}
+                          </div>
+                      </div>
+                  </div>
+              )
+          }
+      }
+    }
+    function showFooter(){
+      if(this){
+          if(this.config.show_info==true || this.config.show_pagination==true){
+              return (
+                  <div className="row table-foot asrt-table-foot" id={(this.props.id) ? this.props.id + "-table-foot" : ""}>
+                      <div className="col-md-6">
+                          {(this.config.show_info) ? paginationInfo : null}
+                      </div>
+                      <div className="col-md-6 pull-right text-right">
+                          {(this.config.show_pagination) ? (
+                              <nav aria-label="Page navigation" className="pull-right">
+                                  <ul className="pagination justify-content-end asrt-pagination">
+                                      {(this.config.show_first) ? (
+                                          <li className={(isFirst ? "disabled " : "") + "page-item"}>
+                                              <a href='#' className="page-link" tabIndex="-1"
+                                                 onClick={this.firstPage.bind(this)}>
+                                                  {this.config.language.pagination.first}
+                                              </a>
+                                          </li>
+                                      ) : null}
+                                      <li className={(isFirst ? "disabled " : "") + "page-item"}>
+                                          <a href='#' className="page-link" tabIndex="-1"
+                                             onClick={this.previousPage.bind(this)}>
+                                              {this.config.language.pagination.previous}
+                                          </a>
+                                      </li>
+                                      <li className="page-item">
+                                          <a className="page-link">{this.state.page_number}</a>
+                                      </li>
+                                      <li className={(isLast ? "disabled " : "") + "page-item"}>
+                                          <a href='#' className="page-link"
+                                             onClick={this.nextPage.bind(this)}>
+                                              {this.config.language.pagination.next}
+                                          </a>
+                                      </li>
+                                      {(this.config.show_last) ? (
+                                          <li className={(isLast ? "disabled " : "") + "page-item"}>
+                                              <a href='#' className="page-link" tabIndex="-1"
+                                                 onClick={this.lastPage.bind(this)}>
+                                                  {this.config.language.pagination.last}
+                                              </a>
+                                          </li>
+                                      ) : null}
+                                  </ul>
+                              </nav>) : null}
+                      </div>
+                  </div>
+              )
+          }
+      }
+    }
+    return (
+      <div className="as-react-table" id={(this.props.id) ? this.props.id + "-container" : ""}>
+        {
+          showHeader()
+        }
         <div className="row table-body asrt-table-body" style={style.table_body} id={(this.props.id) ? this.props.id + "-table-body" : ""}>
           <div className="col-md-12">
             <table className={this.props.className} id={this.props.id}>
-              <thead>
+              <thead className={this.props.tHeadClassName?tHeadClassName:''}>
                 <tr>
                   {
                     this.props.columns.map((column, index) => {
@@ -535,9 +596,10 @@ class ReactDatatable extends Component {
                       }
 
                       classText += " text-" + align;
-                      if(column.className)
-                      classText += " " + column.className;
-
+                      /*if(column.className)
+                      classText += " " + column.className;*/
+                      if(column.TrOnlyClassName)
+                        classText += " " + column.TrOnlyClassName;
                       return (<th
                         key={(column.key) ? column.key : column.text}
                         className={classText}
@@ -579,53 +641,16 @@ class ReactDatatable extends Component {
             </table>
           </div>
         </div>
-        <div className="row table-foot asrt-table-foot" id={(this.props.id) ? this.props.id + "-table-foot" : ""}>
-          <div className="col-md-6">
-            {(this.config.show_info) ? paginationInfo : null}
-          </div>
-          <div className="col-md-6 pull-right text-right">
-            {(this.config.show_pagination) ? (
-              <nav aria-label="Page navigation" className="pull-right">
-                <ul className="pagination justify-content-end asrt-pagination">
-                  {(this.config.show_first) ? (
-                    <li className={(isFirst ? "disabled " : "") + "page-item"}>
-                      <a href='#' className="page-link" tabIndex="-1"
-                        onClick={this.firstPage.bind(this)}>
-                        {this.config.language.pagination.first}
-                      </a>
-                    </li>
-                  ) : null}
-                  <li className={(isFirst ? "disabled " : "") + "page-item"}>
-                    <a href='#' className="page-link" tabIndex="-1"
-                      onClick={this.previousPage.bind(this)}>
-                      {this.config.language.pagination.previous}
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link">{this.state.page_number}</a>
-                  </li>
-                  <li className={(isLast ? "disabled " : "") + "page-item"}>
-                    <a href='#' className="page-link"
-                      onClick={this.nextPage.bind(this)}>
-                      {this.config.language.pagination.next}
-                    </a>
-                  </li>
-                  {(this.config.show_last) ? (
-                    <li className={(isLast ? "disabled " : "") + "page-item"}>
-                      <a href='#' className="page-link" tabIndex="-1"
-                        onClick={this.lastPage.bind(this)}>
-                        {this.config.language.pagination.last}
-                      </a>
-                    </li>
-                  ) : null}
-                </ul>
-              </nav>) : null}
-          </div>
-        </div>
+        {
+          showFooter()
+        }
       </div>
     )
   }
 }
+
+
+
 
 /**
 * Define component display name
