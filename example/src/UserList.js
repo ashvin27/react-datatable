@@ -72,8 +72,9 @@ class UserList extends Component {
             filename: "Users",
             no_data_text: 'No data available!',
             button: {
-                excel: true,
-                print: true
+                excel: false,
+                print: false,
+                extra: true,
             },
             language: {
                 length_menu: "Show _MENU_ result per page",
@@ -86,11 +87,41 @@ class UserList extends Component {
                     last: "Last"
                 }
             },
-            show_length_menu: true,
-            show_filter: true,
-            show_pagination: true,
-            show_info: true,
-        }
+            show_length_menu: false,
+            show_filter: false,
+            show_pagination: false,
+            show_info: false,
+        };
+
+        this.extraButtons =[
+            {
+              className:"btn btn-primary buttons-pdf",
+              title:"Export TEst",
+              children:[
+                  <span>
+                    <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
+                  </span>
+              ],
+                onClick:(event)=>{
+                    console.log(event);
+                },
+            },
+            {
+                className:"btn btn-primary buttons-pdf",
+                title:"Export TEst",
+                children:[
+                    <span>
+                    <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
+                  </span>
+                ],
+                onClick:(event)=>{
+                    console.log(event);
+                },
+                onDoubleClick:(event)=>{
+                    console.log("doubleClick")
+                }
+            },
+        ]
     }
 
     editUser(user) {
@@ -105,6 +136,8 @@ class UserList extends Component {
         console.log("OnPageChange", pageData);
     }
 
+
+
     render() {
         return (
             <div>
@@ -113,6 +146,7 @@ class UserList extends Component {
                     records={this.props.users}
                     columns={this.columns}
                     onPageChange={this.pageChange.bind(this)}
+                    extraButtons={this.extraButtons}
                 />
             </div>
         )
