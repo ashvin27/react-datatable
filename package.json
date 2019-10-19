@@ -1,6 +1,6 @@
 {
     "name": "@ashvin27/react-datatable",
-    "version": "1.1.4",
+    "version": "1.1.10",
     "description": "ReactDatatable is a component which provide ability to create multifunctional table using single component like jQuery Datatable",
     "main": "./lib/index.js",
     "author": {
@@ -9,7 +9,7 @@
         "url": "https://github.com/ashvin27"
     },
     "license": "MIT",
-    "homepage": "https://github.com/ashvin27/react-datatable/blob/master/README.md",
+    "homepage": "https://ashvin27.github.io/react-datatable/",
     "bugs": {
         "url": "https://github.com/ashvin27/react-datatable/issues",
         "email": "patelash212@gmail.com"
@@ -21,13 +21,16 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "webpack --watch",
-        "build": "webpack"
+        "build": "webpack",
+        "transpile": "babel src -d lib --copy-files",
+        "prepublishOnly": "npm run transpile"
+    },
+    "dependencies": {
+        "lodash": "^4.17.11"
     },
     "peerDependencies": {
         "react": "^16.0.0",
-        "react-dom": "^16.0.0",
-        "js2excel": "^1.0.1",
-        "lodash": "^4.17.11"
+        "react-dom": "^16.0.0"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
@@ -36,19 +39,16 @@
         "babel-plugin-transform-object-rest-spread": "^6.26.0",
         "babel-plugin-transform-react-jsx": "^6.24.1",
         "babel-preset-env": "^1.7.0",
+        "babel-preset-minify": "^0.5.0",
         "babel-runtime": "^6.26.0",
         "css-loader": "^2.0.0",
         "file-loader": "^2.0.0",
         "react": "^16.4.0",
         "react-dom": "^16.4.0",
+        "react-scripts": "1.1.4",
         "style-loader": "^0.23.1",
         "url-loader": "^1.1.2",
-        "react-scripts": "1.1.4",
         "webpack": "^3.10.0"
-    },
-    "dependencies": {
-        "js2excel": "^1.0.1",
-        "lodash": "^4.17.11"
     },
     "keywords": [
         "react",
