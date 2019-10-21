@@ -517,11 +517,6 @@ class ReactDatatable extends Component {
             </table>
           </div>
         </div>
-<<<<<<< HEAD
-        {
-          showFooter()
-        }
-=======
         <TableFooter
           config={this.config}
           id={this.props.id}
@@ -668,7 +663,6 @@ function TableFooter(props){
             </nav>
           ) : null}
         </div>
->>>>>>> ashvin.patel
       </div>
     );
   }
