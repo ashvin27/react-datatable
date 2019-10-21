@@ -11,6 +11,7 @@ import _ from 'lodash';
 import './style.css';
 import upArrow from './up-arrow.png';
 import downArrow from './down-arrow.png';
+import { Z_BLOCK } from 'zlib';
 
 let style = {
   table_body: {
@@ -20,6 +21,9 @@ let style = {
     background: 'none',
     border: 'none',
     padding: 0
+  },
+  page_length_show_text: {
+    display:'inline'
   },
   table_size_dropdown: {
     width: '70px',
@@ -541,7 +545,7 @@ function TableHeader(props){
         <div className="col-md-6">
           {(props.config.show_length_menu) ? (
             <div className="input-group asrt-page-length">
-              <div className="input-group-addon input-group-prepend">
+              <div className="input-group-prepend page-length-show-text" style={style.page_length_show_text}>
                 <span className="input-group-text" style={style.table_size}>
                   {(props.lengthMenuText[0]) ? props.lengthMenuText[0] : ''}
                 </span>
@@ -555,7 +559,7 @@ function TableHeader(props){
                   <option value={props.recordLength}>All</option>
                 </select>
               ) : null}
-              <div className="input-group-addon input-group-prepend">
+              <div className="input-group-prepend" style={style.page_length_show_text}>
                 <span className="input-group-text" style={style.table_size}>
                   {(props.lengthMenuText[1]) ? props.lengthMenuText[1] : ''}
                 </span>
@@ -581,7 +585,7 @@ function TableHeader(props){
                 title="Export to Excel"
                 style={style.table_tool_btn}
                 onClick={props.exportToExcel}>               
-                  <i className="fa file-excel-o" aria-hidden="true"></i>               
+                  <i className="fa fa-file-excel-o" aria-hidden="true"></i>               
               </button>
             ) : null}
             {(props.config.button.csv) ? (

@@ -15,8 +15,7 @@ th.sortable {
     display: inline-block;
     width: auto;
     margin: 0;
-    padding: 0;
-    background: #fff;
+    padding: 0;    
     border: none;
 }
 .asrt-pagination {

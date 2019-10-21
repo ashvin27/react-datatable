@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import ReactDatatable from '../../lib/index.js';
-// import ReactDatatable from '../../src/index.js';
+// import ReactDatatable from '../../lib/index.js';
+import ReactDatatable from '../../src/index.js';
 
 class UserList extends Component {
     constructor(props) {
@@ -107,8 +107,9 @@ class UserList extends Component {
 
     render() {
         return (
-            <div>
+            <div className="table-responsive">
                 <ReactDatatable
+                    className= "table table-bordered alter table-striped"
                     config={this.config}
                     records={this.props.users}
                     columns={this.columns}
