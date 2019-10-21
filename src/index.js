@@ -580,10 +580,8 @@ function TableHeader(props){
                 aria-controls="configuration_tbl"
                 title="Export to Excel"
                 style={style.table_tool_btn}
-                onClick={props.exportToExcel}>
-                <span>
-                  <i className="fa fa-file-excel-o" aria-hidden="true"></i>
-                </span>
+                onClick={props.exportToExcel}>               
+                  <i className="fa file-excel-o" aria-hidden="true"></i>               
               </button>
             ) : null}
             {(props.config.button.csv) ? (
@@ -592,10 +590,8 @@ function TableHeader(props){
                 aria-controls="configuration_tbl"
                 title="Export to CSV"
                 style={style.table_tool_btn}
-                onClick={props.exportToCSV}>
-                <span>
-                  <i className="fa fa-file-text-o" aria-hidden="true"></i>
-                </span>
+                onClick={props.exportToCSV}>                
+                  <i className="fa fa-file-text-o" aria-hidden="true"></i>                
               </button>
             ) : null}
             {(props.config.button.print) ? (
