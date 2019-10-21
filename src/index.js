@@ -23,7 +23,8 @@ let style = {
     padding: 0
   },
   page_length_show_text: {
-    display:'inline'
+    display:'inline-block',
+    verticalAlign :'middle'
   },
   table_size_dropdown: {
     width: '70px',
