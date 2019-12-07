@@ -100,6 +100,7 @@ class ReactDatatable extends Component {
   filterRecords(e) {
     let value = e.target.value;
     this.setState({
+      page_number: 1,
       filter_value: value
     }, () => {
       this.onChange();
@@ -438,149 +439,24 @@ class ReactDatatable extends Component {
     paginationInfo = paginationInfo.replace('_START_', (this.state.page_number == 1) ? 1 : startRecords);
     paginationInfo = paginationInfo.replace('_END_', endRecords);
     paginationInfo = paginationInfo.replace('_TOTAL_', totalRecords);
-    function showHeader(){
-      if(this){
-          if(this.config.show_length_menu==true || this.config.show_filter==true ||this.config.button.excel==true || this.config.button.csv==true || this.config.button.print==true){
-              return (
-                  <div className="row table-head asrt-table-head" id={(this.props.id) ? this.props.id + "-table-head" : ""}>
-                      <div className="col-md-6">
-                          {(this.config.show_length_menu) ? (
-                              <div className="input-group asrt-page-length">
-                                  <div className="input-group-addon input-group-prepend">
-                  <span className="input-group-text" style={style.table_size}>
-                    {(lengthMenuText[0]) ? lengthMenuText[0] : ''}
-                  </span>
-                                  </div>
-                                  {(_.includes(this.config.language.length_menu, '_MENU_')) ? (
-                                      <select type="text" className="form-control" style={style.table_size_dropdown}
-                                              onChange={this.changePageSize.bind(this)}>
-                                          {this.config.length_menu.map((value, key) => {
-                                              return (<option key={value}>{value}</option>);
-                                          })}
-                                          <option value={this.props.records.length}>All</option>
-                                      </select>
-                                  ) : null}
-                                  <div className="input-group-addon input-group-prepend">
-                  <span className="input-group-text" style={style.table_size}>
-                    {(lengthMenuText[1]) ? lengthMenuText[1] : ''}
-                  </span>
-                                  </div>
-                              </div>
-                          ) : null}
-                      </div>
-                      <div className="col-md-6 float-right text-right">
-                          {(this.config.show_filter) ? (
-                              <div className="table_filter" style={style.table_filter}>
-                                  <input
-                                      type="search"
-                                      className="form-control"
-                                      placeholder={this.config.language.filter}
-                                      onChange={this.filterRecords.bind(this)} />
-                              </div>) : null}
-                          <div className="table_tools" style={style.table_tool}>
-                              {(this.config.button.excel) ? (
-                                  <button className="btn btn-primary buttons-excel"
-                                          tabIndex="0"
-                                          aria-controls="configuration_tbl"
-                                          title="Export to Excel"
-                                          style={style.table_tool_btn}
-                                          onClick={this.exportToExcel}>
-                <span>
-                  <i className="fa fa-file-excel-o" aria-hidden="true"></i>
-                </span>
-                                  </button>
-                              ) : null}
-                              {(this.config.button.csv) ? (
-                                  <button className="btn btn-primary buttons-csv"
-                                          tabIndex="0"
-                                          aria-controls="configuration_tbl"
-                                          title="Export to CSV"
-                                          style={style.table_tool_btn}
-                                          onClick={this.exportToCSV}>
-                <span>
-                  <i className="fa fa-file-text-o" aria-hidden="true"></i>
-                </span>
-                                  </button>
-                              ) : null}
-                              {(this.config.button.print) ? (
-                                  <button className="btn btn-primary buttons-pdf"
-                                          tabIndex="0"
-                                          aria-controls="configuration_tbl"
-                                          title="Export to PDF"
-                                          style={style.table_tool_btn}
-                                          onClick={this.exportToPDF}>
-                  <span>
-                    <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
-                  </span>
-                                  </button>
-                              ) : null}
-                          </div>
-                      </div>
-                  </div>
-              )
-          }
-      }
-    }
-    function showFooter(){
-      if(this){
-          if(this.config.show_info==true || this.config.show_pagination==true){
-              return (
-                  <div className="row table-foot asrt-table-foot" id={(this.props.id) ? this.props.id + "-table-foot" : ""}>
-                      <div className="col-md-6">
-                          {(this.config.show_info) ? paginationInfo : null}
-                      </div>
-                      <div className="col-md-6 pull-right text-right">
-                          {(this.config.show_pagination) ? (
-                              <nav aria-label="Page navigation" className="pull-right">
-                                  <ul className="pagination justify-content-end asrt-pagination">
-                                      {(this.config.show_first) ? (
-                                          <li className={(isFirst ? "disabled " : "") + "page-item"}>
-                                              <a href='#' className="page-link" tabIndex="-1"
-                                                 onClick={this.firstPage.bind(this)}>
-                                                  {this.config.language.pagination.first}
-                                              </a>
-                                          </li>
-                                      ) : null}
-                                      <li className={(isFirst ? "disabled " : "") + "page-item"}>
-                                          <a href='#' className="page-link" tabIndex="-1"
-                                             onClick={this.previousPage.bind(this)}>
-                                              {this.config.language.pagination.previous}
-                                          </a>
-                                      </li>
-                                      <li className="page-item">
-                                          <a className="page-link">{this.state.page_number}</a>
-                                      </li>
-                                      <li className={(isLast ? "disabled " : "") + "page-item"}>
-                                          <a href='#' className="page-link"
-                                             onClick={this.nextPage.bind(this)}>
-                                              {this.config.language.pagination.next}
-                                          </a>
-                                      </li>
-                                      {(this.config.show_last) ? (
-                                          <li className={(isLast ? "disabled " : "") + "page-item"}>
-                                              <a href='#' className="page-link" tabIndex="-1"
-                                                 onClick={this.lastPage.bind(this)}>
-                                                  {this.config.language.pagination.last}
-                                              </a>
-                                          </li>
-                                      ) : null}
-                                  </ul>
-                              </nav>) : null}
-                      </div>
-                  </div>
-              )
-          }
-      }
-    }
+    
     return (
       <div className="as-react-table" id={(this.props.id) ? this.props.id + "-container" : ""}>
-        {
-          showHeader()
-        }
+        <TableHeader
+          config={this.config}
+          id={this.props.id}
+          lengthMenuText={lengthMenuText}
+          recordLength={(this.props.dynamic) ? this.props.total_record : this.props.records.length}
+          filterRecords={this.filterRecords.bind(this)}
+          changePageSize={this.changePageSize.bind(this)}
+          exportToExcel={this.exportToExcel.bind(this)}
+          exportToCSV={this.exportToCSV.bind(this)}
+          exportToPDF={this.exportToPDF.bind(this)}
+          />
         <div className="row table-body asrt-table-body" style={style.table_body} id={(this.props.id) ? this.props.id + "-table-body" : ""}>
           <div className="col-md-12">
             <table className={this.props.className} id={this.props.id}>
-              <thead className={this.props.tHeadClassName?tHeadClassName:''}>
+              <thead className={this.props.tHeadClassName ? this.props.tHeadClassName : ''}>
                 <tr>
                   {
                     this.props.columns.map((column, index) => {
@@ -589,7 +465,7 @@ class ReactDatatable extends Component {
                       align = (column.align) ? column.align : "",
                       sortOrder = "",
                       columnStyle = {};
-                      if (this.state.sort.column == column.key) {
+                      if (column.sortable && this.state.sort.column == column.key) {
                         sortOrder = this.state.sort.order;
                         classText += (sortOrder) ? " " + sortOrder : "";
                         columnStyle = (sortOrder == "asc") ? style.sort_asc : style.sort_desc;
@@ -641,11 +517,154 @@ class ReactDatatable extends Component {
             </table>
           </div>
         </div>
-        {
-          showFooter()
-        }
+        <TableFooter
+          config={this.config}
+          id={this.props.id}
+          isFirst={isFirst}
+          isLast={isLast}
+          paginationInfo={paginationInfo}
+          page_number={this.state.page_number}
+          firstPage={this.firstPage.bind(this)}
+          lastPage={this.lastPage.bind(this)}
+          previousPage={this.previousPage.bind(this)}
+          nextPage={this.nextPage.bind(this)}
+          changePageSize={this.changePageSize.bind(this)}/>
       </div>
     )
+  }
+}
+
+function TableHeader(props){
+  if(props.config.show_length_menu==true || props.config.show_filter==true ||props.config.button.excel==true || props.config.button.csv==true || props.config.button.print==true){
+    return (
+      <div className="row table-head asrt-table-head" id={(props.id) ? props.id + "-table-head" : ""}>
+        <div className="col-md-6">
+          {(props.config.show_length_menu) ? (
+            <div className="input-group asrt-page-length">
+              <div className="input-group-addon input-group-prepend">
+                <span className="input-group-text" style={style.table_size}>
+                  {(props.lengthMenuText[0]) ? props.lengthMenuText[0] : ''}
+                </span>
+              </div>
+              {(_.includes(props.config.language.length_menu, '_MENU_')) ? (
+                <select type="text" className="form-control" style={style.table_size_dropdown}
+                  onChange={props.changePageSize}>
+                  {props.config.length_menu.map((value, key) => {
+                    return (<option key={value}>{value}</option>);
+                  })}
+                  <option value={props.recordLength}>All</option>
+                </select>
+              ) : null}
+              <div className="input-group-addon input-group-prepend">
+                <span className="input-group-text" style={style.table_size}>
+                  {(props.lengthMenuText[1]) ? props.lengthMenuText[1] : ''}
+                </span>
+              </div>
+            </div>
+          ) : null}
+        </div>
+        <div className="col-md-6 float-right text-right">
+          {(props.config.show_filter) ? (
+            <div className="table_filter" style={style.table_filter}>
+              <input
+                type="search"
+                className="form-control"
+                placeholder={props.config.language.filter}
+                onChange={props.filterRecords} />
+            </div>
+          ) : null}
+          <div className="table_tools" style={style.table_tool}>
+            {(props.config.button.excel) ? (
+              <button className="btn btn-primary buttons-excel"
+                tabIndex="0"
+                aria-controls="configuration_tbl"
+                title="Export to Excel"
+                style={style.table_tool_btn}
+                onClick={props.exportToExcel}>
+                <span>
+                  <i className="fa fa-file-excel-o" aria-hidden="true"></i>
+                </span>
+              </button>
+            ) : null}
+            {(props.config.button.csv) ? (
+              <button className="btn btn-primary buttons-csv"
+                tabIndex="0"
+                aria-controls="configuration_tbl"
+                title="Export to CSV"
+                style={style.table_tool_btn}
+                onClick={props.exportToCSV}>
+                <span>
+                  <i className="fa fa-file-text-o" aria-hidden="true"></i>
+                </span>
+              </button>
+            ) : null}
+            {(props.config.button.print) ? (
+              <button className="btn btn-primary buttons-pdf"
+                tabIndex="0"
+                aria-controls="configuration_tbl"
+                title="Export to PDF"
+                style={style.table_tool_btn}
+                onClick={props.exportToPDF}>
+                <span>
+                  <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
+                </span>
+              </button>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+function TableFooter(props){
+  if(props.config.show_info==true || props.config.show_pagination==true){
+    return (
+      <div className="row table-foot asrt-table-foot" id={(props.id) ? props.id + "-table-foot" : ""}>
+        <div className="col-md-6">
+          {(props.config.show_info) ? props.paginationInfo : null}
+        </div>
+        <div className="col-md-6 pull-right text-right">
+          {(props.config.show_pagination) ? (
+            <nav aria-label="Page navigation" className="pull-right">
+              <ul className="pagination justify-content-end asrt-pagination">
+                {(props.config.show_first) ? (
+                  <li className={(props.isFirst ? "disabled " : "") + "page-item"}>
+                    <a href='#' className="page-link" tabIndex="-1"
+                      onClick={props.firstPage}>
+                      {props.config.language.pagination.first}
+                    </a>
+                  </li>
+                ) : null}
+                <li className={(props.isFirst ? "disabled " : "") + "page-item"}>
+                  <a href='#' className="page-link" tabIndex="-1"
+                    onClick={props.previousPage}>
+                    {props.config.language.pagination.previous}
+                  </a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link">{props.page_number}</a>
+                </li>
+                <li className={(props.isLast ? "disabled " : "") + "page-item"}>
+                  <a href='#' className="page-link"
+                    onClick={props.nextPage}>
+                    {props.config.language.pagination.next}
+                  </a>
+                </li>
+                {(props.config.show_last) ? (
+                  <li className={(props.isLast ? "disabled " : "") + "page-item"}>
+                    <a href='#' className="page-link" tabIndex="-1"
+                      onClick={props.lastPage}>
+                      {props.config.language.pagination.last}
+                    </a>
+                  </li>
+                ) : null}
+              </ul>
+            </nav>
+          ) : null}
+        </div>
+      </div>
+    );
   }
 }
 
