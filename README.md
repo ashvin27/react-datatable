@@ -98,7 +98,8 @@ class App extends Component {
             length_menu: [ 10, 20, 50 ],
             button: {
                 excel: true,
-                print: true
+                print: true,
+                extra: true,
             }
         }
         
@@ -138,6 +139,35 @@ class App extends Component {
               }
             ]
         }
+        this.extraButtons =[
+            {
+                className:"btn btn-primary buttons-pdf",
+                title:"Export TEst",
+                children:[
+                    <span>
+                    <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
+                    </span>
+                ],
+                onClick:(event)=>{
+                    console.log(event);
+                },
+            },
+            {
+                className:"btn btn-primary buttons-pdf",
+                title:"Export TEst",
+                children:[
+                    <span>
+                    <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
+                    </span>
+                ],
+                onClick:(event)=>{
+                    console.log(event);
+                },
+                onDoubleClick:(event)=>{
+                    console.log("doubleClick")
+                }
+            },
+        ]
     }
 
     editRecord(record) {
@@ -155,6 +185,7 @@ class App extends Component {
                     config={this.config}
                     records={this.state.records}
                     columns={this.columns}
+                    extraButtons={this.extraButtons}
                 />
             </div>
         )
@@ -184,6 +215,7 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | total_record | Number | This props will used to specify the total records in case of table data is server side.
 | onChange | Function(Object) | This method will call on table actions(page change, sorting, filtering, page length change)
 | onRowClicked | Function(Object) | This method will call when user click on a row, return row object.
+| extraButtons | Object[] | this props will add custom extra buttons to the table tools in the top right of the table header next to the built in export buttons
 
 ## Options
 | Name  | Type | default | Description

@@ -11,7 +11,7 @@ module.exports = {
     watch: false,
     plugins: [
         new webpack.DefinePlugin({
-          'process.env.NODE_ENV': JSON.stringify('production') // production development
+          'process.env.NODE_ENV': JSON.stringify('development') // production development
         }),
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.HotModuleReplacementPlugin()

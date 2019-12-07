@@ -67,6 +67,7 @@ class ReactDatatable extends Component {
         excel: (props.config && props.config.button && props.config.button.excel) ? props.config.button.excel : false,
         print: (props.config && props.config.button && props.config.button.print) ? props.config.button.print : false,
         csv: (props.config && props.config.button && props.config.button.csv) ? props.config.button.csv : false,
+        extra : (props.config && props.config.button && props.config.button.extra) ? props.config.button.extra : false,
       },
       filename: (props.config && props.config.filename) ? props.config.filename : "table",
       language: {
@@ -439,7 +440,6 @@ class ReactDatatable extends Component {
     paginationInfo = paginationInfo.replace('_START_', (this.state.page_number == 1) ? 1 : startRecords);
     paginationInfo = paginationInfo.replace('_END_', endRecords);
     paginationInfo = paginationInfo.replace('_TOTAL_', totalRecords);
-    
     return (
       <div className="as-react-table" id={(this.props.id) ? this.props.id + "-container" : ""}>
         <TableHeader
@@ -452,7 +452,7 @@ class ReactDatatable extends Component {
           exportToExcel={this.exportToExcel.bind(this)}
           exportToCSV={this.exportToCSV.bind(this)}
           exportToPDF={this.exportToPDF.bind(this)}
-          />
+          extraButtons={this.props.extraButtons}/>
         <div className="row table-body asrt-table-body" style={style.table_body} id={(this.props.id) ? this.props.id + "-table-body" : ""}>
           <div className="col-md-12">
             <table className={this.props.className} id={this.props.id}>
@@ -610,10 +610,31 @@ function TableHeader(props){
                 </span>
               </button>
             ) : null}
+            {(props.config.button.extra==true) ? (
+              props.extraButtons.map((elem,index)=>{
+                  elem.clickCount=0;
+                  elem.singleClickTimer='';
+                  return (
+                      <button className={elem.className ? elem.className : "btn btn-primary buttons-pdf"}
+                        tabIndex="0"
+                        aria-controls="configuration_tbl"
+                        title={elem.title?elem.title:"Export to PDF"}
+                        style={style.table_tool_btn}
+                        onClick={(event)=>{
+                          elem.onClick(event);
+                        }}
+                        key={index}>
+                          {elem.children}
+                      </button>
+                  )
+              })
+            ) : null}
           </div>
         </div>
       </div>
     );
+  } else {
+    return null;
   }
 }
 
@@ -665,6 +686,8 @@ function TableFooter(props){
         </div>
       </div>
     );
+  } else {
+    return null;
   }
 }
 

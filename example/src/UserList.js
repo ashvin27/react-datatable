@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import ReactDatatable from '../../lib/index.js';
-// import ReactDatatable from '../../src/index.js';
+// import ReactDatatable from '../../lib/index.js';
+import ReactDatatable from '../../src/index.js';
 
 class UserList extends Component {
     constructor(props) {
@@ -73,7 +73,8 @@ class UserList extends Component {
             no_data_text: 'No data available!',
             button: {
                 excel: true,
-                print: true
+                print: true,
+                extra: false,
             },
             language: {
                 length_menu: "Show _MENU_ result per page",
@@ -90,7 +91,37 @@ class UserList extends Component {
             show_filter: true,
             show_pagination: true,
             show_info: true,
-        }
+        };
+
+        this.extraButtons =[
+            {
+              className:"btn btn-primary buttons-pdf",
+              title:"Export TEst",
+              children:[
+                  <span>
+                    <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
+                  </span>
+              ],
+              onClick:(event)=>{
+                  console.log(event);
+              },
+            },
+            {
+                className:"btn btn-primary buttons-pdf",
+                title:"Export TEst",
+                children:[
+                  <span>
+                    <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
+                  </span>
+                ],
+                onClick:(event)=>{
+                    console.log(event);
+                },
+                onDoubleClick:(event)=>{
+                    console.log("doubleClick")
+                }
+            },
+        ]
     }
 
     editUser(user) {
@@ -113,6 +144,7 @@ class UserList extends Component {
                     records={this.props.users}
                     columns={this.columns}
                     onPageChange={this.pageChange.bind(this)}
+                    extraButtons={this.extraButtons}
                 />
             </div>
         )
