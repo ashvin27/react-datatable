@@ -33,7 +33,7 @@ let style = {
     display: 'inline-block',
     verticalAlign: 'top',
     marginRight: '5px',
-    width: '240px'
+    width: '190px'
   },
   table_tool: {
     display: 'inline-block',
