@@ -8,9 +8,10 @@ module.exports = {
         filename: 'index.js',
         // libraryTarget: 'commonjs2'
     },
+    watch: false,
     plugins: [
         new webpack.DefinePlugin({
-          'process.env.NODE_ENV': JSON.stringify('production') // production development
+          'process.env.NODE_ENV': JSON.stringify('development') // production development
         }),
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.HotModuleReplacementPlugin()
@@ -19,7 +20,6 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                // include: path.resolve(__dirname, 'src'),
                 exclude: /(node_modules|bower_components|build)/,
                 use: {
                     loader: 'babel-loader',
@@ -33,13 +33,6 @@ module.exports = {
                 test: /\.css$/,
                 use: ["style-loader", "css-loader"]
             },
-            /*{
-                test: /\.(png|jpg|gif)$/,
-                use:  {
-                    loader: 'file-loader',
-                    options: {}
-                }
-            },*/
             {
                 test: /\.(png|jpg|gif)$/i,
                 use: {
@@ -49,7 +42,4 @@ module.exports = {
             }
         ]
     },
-    /*externals: {
-        'react': 'commonjs react'
-    }*/
 };
