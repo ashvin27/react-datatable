@@ -231,6 +231,7 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | show_last | boolean | true | Use to specify either show or hide pagination last button
 | show_length_menu | boolean | true | Use to specify either show or hide page length menu
 | show_pagination | boolean | true | Use to specify either show or hide pagination
+| pagination | string | basic | Use to specify the type of pagination. Available types: basic/advance
 
 ## Columns
 | Name  | Type | default | Description
