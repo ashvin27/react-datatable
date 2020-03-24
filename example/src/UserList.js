@@ -33,7 +33,10 @@ class UserList extends Component {
                 text: "Rating",
                 className: "rating",
                 align: "left",
-                sortable: true
+                sortable: true,
+                cell: record => {
+                    return <span>{record.rating} {record.type_of_food}</span>
+                }
             },
             {
                 key: "type_of_food",
@@ -61,6 +64,7 @@ class UserList extends Component {
                             <button className="btn btn-danger btn-sm" onClick={() => this.deleteUser(record)}>
                                 <i className="glyphicon glyphicon-trash fa fa-trash"></i>
                             </button>
+                            
                         </Fragment>
                     );
                 }
@@ -74,6 +78,7 @@ class UserList extends Component {
             button: {
                 excel: true,
                 print: true,
+                csv: true,
                 extra: false,
             },
             language: {
@@ -87,6 +92,7 @@ class UserList extends Component {
                     last: "Last"
                 }
             },
+            pagination: "basic",
             show_length_menu: true,
             show_filter: true,
             show_pagination: true,

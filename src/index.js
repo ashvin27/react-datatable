@@ -7,10 +7,13 @@
  */
 
 import React, { Component, Fragment } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import _ from 'lodash';
 import './style.css';
 import upArrow from './up-arrow.png';
 import downArrow from './down-arrow.png';
+import Pagination from './Pagination';
+import ADPagination from './ADPagination';
 
 let style = {
   table_body: {
@@ -62,6 +65,7 @@ class ReactDatatable extends Component {
     this.onChange = this.onChange.bind(this);
     this.filterRecords = this.filterRecords.bind(this);
     this.filterData = this.filterData.bind(this);
+    this.sortRecords = this.sortRecords.bind(this);
     this.config = {
       button: {
         excel: (props.config && props.config.button && props.config.button.excel) ? props.config.button.excel : false,
@@ -89,12 +93,15 @@ class ReactDatatable extends Component {
       show_info: (props.config.show_info != undefined) ? props.config.show_info : true,
       show_first: (props.config.show_first != undefined) ? props.config.show_first : true,
       show_last: (props.config.show_last != undefined) ? props.config.show_last : true,
+      pagination: (props.config.pagination) ? props.config.pagination : 'basic'
     };
     this.state = {
+      is_temp_page: false,
       filter_value: "",
       page_size: (props.config.page_size) ? props.config.page_size : 10,
       page_number: 1,
-      sort: (props.config && props.config.sort) ? props.config.sort : { column: props.columns[0].key, order: "asc" }
+      // sort: (props.config && props.config.sort) ? props.config.sort : { column: props.columns[0].key, order: "asc" },
+      sort: (props.config && props.config.sort) ? props.config.sort : false
     };
   }
 
@@ -138,68 +145,6 @@ class ReactDatatable extends Component {
     return Math.ceil(totalRecord / this.state.page_size);
   }
 
-  previousPage(e) {
-    e.preventDefault();
-    let nextPage = this.state.page_number - 1,
-      pageState = {
-        previous_page: this.state.page_number,
-        current_page: nextPage
-      };
-    if(this.isFirst()) return false;
-    this.setState({
-      page_number: nextPage
-    }, () => {
-      this.props.onPageChange(pageState);
-      this.onChange();
-    });
-  }
-
-  nextPage(e) {
-    e.preventDefault();
-    let nextPage = this.state.page_number + 1,
-      pageState = {
-        previous_page: this.state.page_number,
-        current_page: nextPage
-      };
-    if(this.isLast()) return false;
-    this.setState({
-      page_number: nextPage
-    }, () => {
-      this.props.onPageChange(pageState);
-      this.onChange();
-    });
-  }
-
-  firstPage(e) {
-    e.preventDefault();
-    let pageState = {
-      previous_page: this.state.page_number,
-      current_page: 1
-    };
-    if(this.isFirst()) return false;
-    this.setState({
-      page_number: 1
-    }, () => {
-      this.props.onPageChange(pageState);
-      this.onChange();
-    });
-  }
-
-  lastPage(e) {
-    e.preventDefault();
-    let pageState = {
-      previous_page: this.state.page_number,
-      current_page: this.pages
-    };
-    if(this.isLast()) return false;
-    this.setState({
-      page_number: this.pages
-    }, () => {
-      this.props.onPageChange(pageState);
-      this.onChange();
-    });
-  }
-
   isLast() {
     if (this.state.page_number == this.pages) {
       return true
@@ -216,80 +161,131 @@ class ReactDatatable extends Component {
     }
   }
 
-  exportToExcel() {
-    let sTable = "<table>";
-    sTable += "<thead>";
-    sTable += "<tr>";
-    for (let column of this.props.columns) {
-      sTable += "<th>" + column.text + "</th>";
+  goToPage(e, pageNumber){
+    e.preventDefault();
+    if(this.state.page_number == pageNumber){
+      return;
     }
-    sTable += "</tr>";
-    sTable += "</thead>";
-    sTable += "<tbody>";
+    let pageState = {
+      previous_page: this.state.page_number,
+      current_page: pageNumber
+    };
+    this.setState({
+      is_temp_page: false,
+      page_number: pageNumber
+    }, () => {
+      this.props.onPageChange(pageState);
+      this.onChange();
+    });
+  }
+
+  firstPage(e) {
+    e.preventDefault();
+    if(this.isFirst()) return;
+    this.goToPage(e, 1);
+  }
+
+  lastPage(e) {
+    e.preventDefault();
+    if(this.isLast()) return;
+    this.goToPage(e, this.pages);
+  }
+
+  previousPage(e) {
+    e.preventDefault();
+    if(this.isFirst()) return false;
+    this.goToPage(e, this.state.page_number - 1);
+  }
+
+  nextPage(e) {
+    e.preventDefault();
+    if(this.isLast()) return;
+    this.goToPage(e, parseInt(this.state.page_number) + 1);
+  }
+
+  onPageChange(e, isInputChange = false) {
+    if(isInputChange){
+      this.setState({
+        is_temp_page : true,
+        temp_page_number: e.target.value
+      });
+    } else {
+      if (e.key === 'Enter') {
+        let pageNumber = e.target.value;
+        this.goToPage(e, pageNumber);
+      }
+    }
+  }
+
+  onPageBlur(e){
+    let pageNumber = e.target.value;
+    this.goToPage(event, pageNumber);
+  }
+
+  strip(html){
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || "";
+  }
+
+  getExportHtml(){
+    let tableHtml = "<table>";
+    tableHtml += "<thead>";
+    tableHtml += "<tr>";
+    for (let column of this.props.columns) {
+      tableHtml += "<th>" + column.text + "</th>";
+    }
+    tableHtml += "</tr>";
+    tableHtml += "</thead>";
+    tableHtml += "<tbody>";
     for (let i in this.props.records) {
       let record = this.props.records[i];
-      sTable += "<tr>";
+      tableHtml += "<tr>";
       for (let column of this.props.columns) {
         if (column.cell && typeof column.cell === "function") {
-          sTable += "<td></td>";
+          let cellData =  ReactDOMServer.renderToStaticMarkup(column.cell(record, i));
+              cellData = this.strip(cellData);
+          tableHtml += "<td>" + cellData + "</td>";
         }else if (record[column.key]) {
-          sTable += "<td>" + record[column.key] + "</td>";
+          tableHtml += "<td>" + record[column.key] + "</td>";
         } else {
-          sTable += "<td></td>";
+          tableHtml += "<td></td>";
         }
       }
-      sTable += "</tr>";
+      tableHtml += "</tr>";
     }
-    sTable += "</tbody>";
-    sTable += "</table>";
-    let uri = 'data:application/vnd.ms-excel;base64,',
-    template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
-    base64 = function (s) {
-      return window.btoa(unescape(encodeURIComponent(s)))
-    },
-    format = function (s, c) {
-      return s.replace(/{(\w+)}/g, function (m, p) {
-        return c[p];
-      })
-    };
-    let ctx = {
-      worksheet: this.config.filename || 'Worksheet',
-      table: sTable
-    },
-    href = uri + base64(format(template, ctx));
-    let anc = document.createElement('a');
-    anc.setAttribute('href', href);
-    anc.setAttribute('download', this.config.filename + '.xlsx');
-    anc.click();
+    tableHtml += "</tbody>";
+    tableHtml += "</table>";
+
+    return tableHtml;
+  }
+
+  exportToExcel(){
+    let downloadLink, dataType = 'application/vnd.ms-excel';
+
+    let tableHtml = this.getExportHtml();
+    
+    // Specify file name
+    let filename = this.config.filename ? this.config.filename + '.xls':'table.xls';
+    // Create download link element
+    downloadLink = document.createElement("a");
+    // document.body.appendChild(downloadLink);
+    if(navigator.msSaveOrOpenBlob){
+      var blob = new Blob(['\ufeff', tableHtml], {
+          type: dataType
+      });
+      navigator.msSaveOrOpenBlob(blob, filename);
+    }else{
+      // Create a link to the file
+      downloadLink.href = 'data:' + dataType + ', ' + tableHtml;
+      // Setting the file name
+      downloadLink.download = filename;
+      //triggering the function
+      downloadLink.click();
+    }
   }
 
   exportToPDF() {
-    let sTable = "";
-    sTable += "<table>";
-    sTable += "<thead>";
-    sTable += "<tr>";
-    for (let column of this.props.columns) {
-      sTable += "<th>" + column.text + "</th>";
-    }
-    sTable += "</tr>";
-    sTable += "</thead>";
-    sTable += "<tbody>";
-    for (let i in this.props.records) {
-      let record = this.props.records[i];
-      sTable += "<tr>";
-      for (let column of this.props.columns) {
-        if (column.cell && typeof column.cell === "function") {
-          sTable += "<td></td>";
-        }else if (record[column.key]) {
-          sTable += "<td>" + record[column.key] + "</td>";
-        } else {
-          sTable += "<td></td>";
-        }
-      }
-      sTable += "</tr>";
-    }
-    sTable += "</tbody>";
-    sTable += "</table>";
+    let tableHtml = this.getExportHtml();
 
     var style = "<style>";
     style = style + "table {width: 100%;font: 17px Calibri;}";
@@ -304,7 +300,7 @@ class ReactDatatable extends Component {
     win.document.write('</head>');
     win.document.write('<body>');
     win.document.write('<h1>' + this.config.filename + '</h1>');
-    win.document.write(sTable);
+    win.document.write(tableHtml);
     win.document.write('</body></html>');
     win.print();
     win.close();
@@ -337,9 +333,12 @@ class ReactDatatable extends Component {
         newRecord = {};
       for (let column of this.props.columns) {
         if (column.cell && typeof column.cell === "function") {
-          newRecord[column.key] = "";
+          let cellData =  ReactDOMServer.renderToStaticMarkup(column.cell(record, i));
+              cellData = this.strip(cellData);
+          newRecord[column.key] = cellData;
         } else if (record[column.key]) {
-          let colValue  = record[column.key].replace(/"/g, '""');
+          let colValue  = record[column.key];
+          colValue = (typeof colValue === "string") ? colValue.replace(/"/g, '""') : colValue;
           newRecord[column.key] = '"' + colValue + '"';
         } else {
           newRecord[column.key] = "";
@@ -395,25 +394,34 @@ class ReactDatatable extends Component {
     });
   }
 
-  render() {
-    let filterRecords, totalRecords, pages, isFirst, isLast;
-    if(this.props.dynamic === false){
-      // let records = _.orderBy(this.props.records, [{ [this.state.sort.column]: Number }], [this.state.sort.order]),
-      let records = _.orderBy(this.props.records, (o) => {
+  sortRecords(){
+    if(this.state.sort){
+      return _.orderBy(this.props.records, o => {
         let colVal = o[this.state.sort.column];
         let typeofColVal = typeof colVal;
+        
         if (typeofColVal == "string") {
           if (isNaN(colVal)) {
             return new String(colVal.toLowerCase());
           } else {
             return new Number(colVal);
           }
-        }else if (typeofColVal == "number") {
+        } else if (typeofColVal == "number") {
           return new Number(colVal);
         }
-      }, [this.state.sort.order]),
+      }, [this.state.sort.order]);
+    } else {
+      return this.props.records;
+    }
+  }
+
+  render() {
+    let filterRecords, totalRecords, pages, isFirst, isLast;
+    if(this.props.dynamic === false){
+      let records = this.sortRecords(),
         filterValue = this.state.filter_value;
-      filterRecords = records;
+        filterRecords = records;
+
       if (filterValue) {
         filterRecords = this.filterData(records);
       }
@@ -472,8 +480,6 @@ class ReactDatatable extends Component {
                       }
 
                       classText += " text-" + align;
-                      /*if(column.className)
-                      classText += " " + column.className;*/
                       if(column.TrOnlyClassName)
                         classText += " " + column.TrOnlyClassName;
                       return (<th
@@ -523,12 +529,18 @@ class ReactDatatable extends Component {
           isFirst={isFirst}
           isLast={isLast}
           paginationInfo={paginationInfo}
+          pages={pages}
           page_number={this.state.page_number}
+          is_temp_page={this.state.is_temp_page}
+          temp_page_number={this.state.temp_page_number}
           firstPage={this.firstPage.bind(this)}
           lastPage={this.lastPage.bind(this)}
           previousPage={this.previousPage.bind(this)}
           nextPage={this.nextPage.bind(this)}
-          changePageSize={this.changePageSize.bind(this)}/>
+          goToPage={this.goToPage.bind(this)}
+          changePageSize={this.changePageSize.bind(this)}
+          onPageChange={this.onPageChange.bind(this)}
+          onPageBlur={this.onPageBlur.bind(this)}/>
       </div>
     )
   }
@@ -649,37 +661,32 @@ function TableFooter(props){
           {(props.config.show_pagination) ? (
             <nav aria-label="Page navigation" className="pull-right">
               <ul className="pagination justify-content-end asrt-pagination">
-                {(props.config.show_first) ? (
-                  <li className={(props.isFirst ? "disabled " : "") + "page-item"}>
-                    <a href='#' className="page-link" tabIndex="-1"
-                      onClick={props.firstPage}>
-                      {props.config.language.pagination.first}
-                    </a>
-                  </li>
-                ) : null}
-                <li className={(props.isFirst ? "disabled " : "") + "page-item"}>
-                  <a href='#' className="page-link" tabIndex="-1"
-                    onClick={props.previousPage}>
-                    {props.config.language.pagination.previous}
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link">{props.page_number}</a>
-                </li>
-                <li className={(props.isLast ? "disabled " : "") + "page-item"}>
-                  <a href='#' className="page-link"
-                    onClick={props.nextPage}>
-                    {props.config.language.pagination.next}
-                  </a>
-                </li>
-                {(props.config.show_last) ? (
-                  <li className={(props.isLast ? "disabled " : "") + "page-item"}>
-                    <a href='#' className="page-link" tabIndex="-1"
-                      onClick={props.lastPage}>
-                      {props.config.language.pagination.last}
-                    </a>
-                  </li>
-                ) : null}
+                {props.config.pagination == "basic" ? (
+                  <Pagination
+                    config={props.config}
+                    isFirst={props.isFirst}
+                    isLast={props.isLast}
+                    pages={props.pages}
+                    page_number={props.page_number}
+                    is_temp_page={props.is_temp_page}
+                    temp_page_number={props.temp_page_number}
+                    previousPage={props.previousPage}
+                    firstPage={props.firstPage}
+                    nextPage={props.nextPage}
+                    lastPage={props.lastPage}
+                    goToPage={props.goToPage}
+                    onPageChange={props.onPageChange}
+                    onPageBlur={props.onPageBlur} />
+                ) : (
+                <ADPagination
+                  isFirst={props.isFirst}
+                  isLast={props.isLast}
+                  pages={props.pages}
+                  page_number={props.page_number}
+                  previousPage={props.previousPage}
+                  nextPage={props.nextPage}
+                  goToPage={props.goToPage}/>
+                )}
               </ul>
             </nav>
           ) : null}
@@ -690,9 +697,6 @@ function TableFooter(props){
     return null;
   }
 }
-
-
-
 
 /**
 * Define component display name

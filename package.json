@@ -51,13 +51,17 @@
         "webpack": "^3.10.0"
     },
     "keywords": [
-        "react",
-        "reactjs",
         "react-datatable",
         "react-data-table",
         "datatable",
         "datagrid",
         "jquery datatable",
-        "react-component"
+        "react-component",
+        "react datatable",
+        "react data table",
+        "react datagrid",
+        "javascript datatable",
+        "react",
+        "reactjs"
     ]
 }
