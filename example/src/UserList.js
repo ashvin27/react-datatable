@@ -92,7 +92,7 @@ class UserList extends Component {
                     last: "Last"
                 }
             },
-            pagination: "basic",
+            pagination: "advance",
             show_length_menu: true,
             show_filter: true,
             show_pagination: true,
