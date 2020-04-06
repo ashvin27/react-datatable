@@ -146,6 +146,10 @@ class ReactDatatable extends Component {
   }
 
   isLast() {
+    // because for empty records page_number will still be 1
+    if(this.pages == 0){
+      return true;
+    }
     if (this.state.page_number == this.pages) {
       return true
     } else {
