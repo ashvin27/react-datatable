@@ -14,7 +14,7 @@ ReactDatatable is a component which provide ability to create multifunctional ta
 * Fully controllable via optional props and callbacks
 
 ## Example
-[http://react-datatable.in/](Example)
+[http://react-datatable.in/](http://react-datatable.in/)
 
 ## Installation
 With [npm](https://npmjs.org/) installed, run
