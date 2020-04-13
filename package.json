@@ -26,7 +26,7 @@
         "prepublishOnly": "npm run transpile"
     },
     "dependencies": {
-        "lodash": "^4.17.11"
+        "lodash": "^4.17.15"
     },
     "peerDependencies": {
         "react": "^16.0.0",
