@@ -74,6 +74,7 @@ class ReactDatatable extends Component {
         extra : (props.config && props.config.button && props.config.button.extra) ? props.config.button.extra : false,
       },
       filename: (props.config && props.config.filename) ? props.config.filename : "table",
+      recordKeyColumn: props.config && props.config.recordKeyColumn ? props.config.recordKeyColumn : "id",
       language: {
         length_menu: (props.config && props.config.language && props.config.language.length_menu) ? props.config.language.length_menu : "Show _MENU_ records per page",
         filter: (props.config && props.config.language && props.config.language.filter) ? props.config.language.filter : "Search in records...",
@@ -502,7 +503,7 @@ class ReactDatatable extends Component {
                 {(filterRecords.length) ? filterRecords.map((record, rowIndex) => {
                   rowIndex = _.indexOf(this.props.records, record);
                   return (
-                    <tr key={record.id} onClick={(e) => this.props.onRowClicked(e, record, rowIndex)}>
+                    <tr key={record.[config.recordKeyColumn]} onClick={(e) => this.props.onRowClicked(e, record, rowIndex)}>
                       {
                         this.props.columns.map((column, colIndex) => {
                           if (column.cell && typeof column.cell === "function") {
@@ -721,6 +722,7 @@ ReactDatatable.defaultProps = {
       csv: false
     },
     filename: "table",
+    recordKeyColumn:"id",
     language: {
       length_menu: "Show _MENU_ records per page",
       filter: "Search in records...",
