@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import ReactDatatable from '../../lib/index.js';
-// import ReactDatatable from '../../src/index.js';
+// import ReactDatatable from '../../lib/index.js';
+import ReactDatatable from '../../src/index.js';
 
 class UserList extends Component {
     constructor(props) {
@@ -71,6 +71,7 @@ class UserList extends Component {
             }
         ];
         this.config = {
+            key_column: '_id', 
             page_size: 10,
             length_menu: [ 10, 20, 50 ],
             filename: "Users",

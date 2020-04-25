@@ -18,7 +18,6 @@ export default function ADPagination(props){
 
   let Add = function(s, f){
     for (let i = s; i < f; i++) {
-      console.log('i', i);
       tags.push(<Item 
         key={i}
         className={(page == i) ? "active" : ""}
