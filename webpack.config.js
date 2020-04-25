@@ -10,11 +10,11 @@ module.exports = {
     },
     watch: true,
     plugins: [
-        // new webpack.DefinePlugin({
-        //   'process.env.NODE_ENV': JSON.stringify('development') // production development
-        // }),
-        // new webpack.optimize.UglifyJsPlugin(),
-        // new webpack.HotModuleReplacementPlugin()
+        new webpack.DefinePlugin({
+          'process.env.NODE_ENV': JSON.stringify('development') // production development
+        }),
+        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.HotModuleReplacementPlugin()
     ],
     module: {
         rules: [
