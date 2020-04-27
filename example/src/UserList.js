@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-// import ReactDatatable from '../../lib/index.js';
-import ReactDatatable from '../../src/index.js';
+import ReactDatatable from '../../lib/index.js';
+// import ReactDatatable from '../../src/index.js';
 
 class UserList extends Component {
     constructor(props) {
