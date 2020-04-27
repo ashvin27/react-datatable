@@ -220,6 +220,7 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 ## Options
 | Name  | Type | default | Description
 | ------------- | ------------- | ------------- | ------------- |
+| key_column | string | id | Use to specify the key column name for each record
 | button  | Object[]  | { excel: false, print: false, csv: false } | Use to enable/disable export buttons(Excel, CSV, Print). By default buttons are disabled.
 | filename  | String  | "table" | Specify the export filename
 | length_menu  | Array[]  | [10, 25, 50, 75, 100]  | Specify the options in the page length `select` list.
