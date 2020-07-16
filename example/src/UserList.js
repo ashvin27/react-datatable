@@ -1,10 +1,16 @@
 import React, { Component, Fragment } from 'react';
-import ReactDatatable from '../../lib/index.js';
-// import ReactDatatable from '../../src/index.js';
+// import ReactDatatable from '../../lib/index.js';
+import ReactDatatable from '../../src/index.js';
+import users from '../data/data.json';
 
 class UserList extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            loading: true,
+            users: []
+        };
+
         this.deleteUser = this.deleteUser.bind(this);
         this.columns = [
             {
@@ -93,7 +99,7 @@ class UserList extends Component {
                     last: "Last"
                 }
             },
-            pagination: "advance",
+            pagination: "basic", //advance
             show_length_menu: true,
             show_filter: true,
             show_pagination: true,
@@ -131,6 +137,15 @@ class UserList extends Component {
         ]
     }
 
+    componentDidMount () {
+        setTimeout(() => {
+            this.setState({
+                loading: false,
+                users: users
+            })
+        }, 5000);
+    }
+
     editUser(user) {
         console.log("Edit User", user);
     }
@@ -148,10 +163,11 @@ class UserList extends Component {
             <div>
                 <ReactDatatable
                     config={this.config}
-                    records={this.props.users}
+                    records={this.state.users}
                     columns={this.columns}
                     onPageChange={this.pageChange.bind(this)}
                     extraButtons={this.extraButtons}
+                    loading={this.state.loading}
                 />
             </div>
         )

@@ -22,3 +22,9 @@ th.sortable {
 .asrt-pagination {
     margin: 0;
 }
+.asrt-td-loading {
+    background-color: #fff;
+}
+.asrt-loading-textwrap{
+    padding: 5px 0px;
+}
