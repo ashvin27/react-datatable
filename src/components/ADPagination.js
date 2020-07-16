@@ -9,8 +9,8 @@ export default function ADPagination(props){
   let Item = function(props) {
     let className = (props.className) || "";
     return(<li className={"page-item " + className}>
-      <a href='javascript:void(0);' className="page-link" tabIndex="-1"
-        onClick={props.onClick}>
+      <a href='#' className="page-link" tabIndex="-1"
+        onClick={(e) => { e.preventDefault(); props.onClick(e) }}>
         {props.children}
       </a>
     </li>);
