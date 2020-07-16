@@ -6,51 +6,13 @@
  * @date           14 Dec, 2018
  */
 
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import _ from 'lodash';
-import './style.css';
-import upArrow from './up-arrow.png';
-import downArrow from './down-arrow.png';
-import Pagination from './Pagination';
-import ADPagination from './ADPagination';
-
-let style = {
-  table_body: {
-    marginTop: '16px'
-  },
-  table_size: {
-    background: 'none',
-    border: 'none',
-    padding: 0
-  },
-  table_size_dropdown: {
-    width: '70px',
-    flex: 'none',
-    margin: '0px 10px',
-    display: 'inline-block',
-    float: 'none'
-  },
-  table_filter: {
-    display: 'inline-block',
-    verticalAlign: 'top',
-    marginRight: '5px',
-    width: '250px'
-  },
-  table_tool: {
-    display: 'inline-block',
-    verticalAlign: 'top'
-  },
-  table_tool_btn: {
-    marginRight: '5px'
-  },
-  sort_asc: {
-    backgroundImage: `url(${upArrow})`
-  },
-  sort_desc: {
-    backgroundImage: `url(${downArrow})`
-  }
-};
+import './assets/css/style.css';
+import TableHeader from './components/TableHeader';
+import TableFooter from './components/TableFooter';
+import style from './style';
 
 class ReactDatatable extends Component {
 
@@ -84,10 +46,11 @@ class ReactDatatable extends Component {
           previous: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.previous) ? props.config.language.pagination.previous : "Previous",
           next: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.next) ? props.config.language.pagination.next : "Next",
           last: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.last) ? props.config.language.pagination.last : "Last"
-        }
+        },
+        no_data_text: (props.config && props.config.language && props.config.language.no_data_text) ? props.config.language.no_data_text : 'No rows found',
+        loading_text: (props.config && props.config.language && props.config.language.loading_text) ? props.config.language.loading_text : "Loading..."
       },
       length_menu: (props.config && props.config.length_menu) ? props.config.length_menu : [10, 25, 50, 75, 100],
-      no_data_text: (props.config && props.config.no_data_text) ? props.config.no_data_text : 'No rows found',
       show_length_menu: (props.config.show_length_menu != undefined) ? props.config.show_length_menu : true,
       show_filter: (props.config.show_filter != undefined) ? props.config.show_filter : true,
       show_pagination: (props.config.show_pagination != undefined) ? props.config.show_pagination : true,
@@ -101,7 +64,6 @@ class ReactDatatable extends Component {
       filter_value: "",
       page_size: (props.config.page_size) ? props.config.page_size : 10,
       page_number: 1,
-      // sort: (props.config && props.config.sort) ? props.config.sort : { column: props.columns[0].key, order: "asc" },
       sort: (props.config && props.config.sort) ? props.config.sort : false
     };
   }
@@ -500,30 +462,46 @@ class ReactDatatable extends Component {
                 </tr>
               </thead>
               <tbody>
-                {(filterRecords.length) ? filterRecords.map((record, rowIndex) => {
-                  rowIndex = _.indexOf(this.props.records, record);
-                  return (
-                    <tr key={record[this.config.key_column]} onClick={(e) => this.props.onRowClicked(e, record, rowIndex)}>
-                      {
-                        this.props.columns.map((column, colIndex) => {
-                          if (column.cell && typeof column.cell === "function") {
-                            return (<td className={column.className} key={(column.key) ? column.key : column.text}>{column.cell(record,rowIndex)}</td>);
-                          }else if (record[column.key]) {
-                            return (<td className={column.className} key={(column.key) ? column.key : column.text}>
-                              {record[column.key]}
-                            </td>);
-                          }else {
-                            return <td className={column.className} key={(column.key) ? column.key : column.text}></td>
+                {this.props.loading === true ? (
+                  <tr>
+                    <td colSpan={this.props.columns.length} className="asrt-td-loading" align="center">
+                      <div className="asrt-loading-textwrap">
+                        <span className="asrt-loading-text">
+                          {this.config.language.loading_text}
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  (filterRecords.length) ? 
+                    filterRecords.map((record, rowIndex) => {
+                      rowIndex = _.indexOf(this.props.records, record);
+                      return (
+                        <tr key={record[this.config.key_column]} onClick={(e) => this.props.onRowClicked(e, record, rowIndex)}>
+                          {
+                            this.props.columns.map((column, colIndex) => {
+                              if (column.cell && typeof column.cell === "function") {
+                                return (<td className={column.className} key={(column.key) ? column.key : column.text}>{column.cell(record,rowIndex)}</td>);
+                              }else if (record[column.key]) {
+                                return (<td className={column.className} key={(column.key) ? column.key : column.text}>
+                                  {record[column.key]}
+                                </td>);
+                              }else {
+                                return <td className={column.className} key={(column.key) ? column.key : column.text}></td>
+                              }
+                            })
                           }
-                        })
-                      }
-                    </tr>
-                  )
-                }) : (<tr>
-                  <td colSpan={this.props.columns.length} align="center">
-                    {this.config.no_data_text}
-                  </td>
-                </tr>)}
+                        </tr>
+                      )
+                    }) : 
+                    (
+                      <tr>
+                        <td colSpan={this.props.columns.length} align="center">
+                          {this.config.no_data_text}
+                        </td>
+                      </tr>
+                    )
+                )}
               </tbody>
             </table>
           </div>
@@ -548,158 +526,6 @@ class ReactDatatable extends Component {
           onPageBlur={this.onPageBlur.bind(this)}/>
       </div>
     )
-  }
-}
-
-function TableHeader(props){
-  if(props.config.show_length_menu==true || props.config.show_filter==true ||props.config.button.excel==true || props.config.button.csv==true || props.config.button.print==true){
-    return (
-      <div className="row table-head asrt-table-head" id={(props.id) ? props.id + "-table-head" : ""}>
-        <div className="col-md-6">
-          {(props.config.show_length_menu) ? (
-            <div className="input-group asrt-page-length">
-              <div className="input-group-addon input-group-prepend">
-                <span className="input-group-text" style={style.table_size}>
-                  {(props.lengthMenuText[0]) ? props.lengthMenuText[0] : ''}
-                </span>
-              </div>
-              {(_.includes(props.config.language.length_menu, '_MENU_')) ? (
-                <select type="text" className="form-control" style={style.table_size_dropdown}
-                  onChange={props.changePageSize}>
-                  {props.config.length_menu.map((value, key) => {
-                    return (<option key={value}>{value}</option>);
-                  })}
-                  <option value={props.recordLength}>All</option>
-                </select>
-              ) : null}
-              <div className="input-group-addon input-group-prepend">
-                <span className="input-group-text" style={style.table_size}>
-                  {(props.lengthMenuText[1]) ? props.lengthMenuText[1] : ''}
-                </span>
-              </div>
-            </div>
-          ) : null}
-        </div>
-        <div className="col-md-6 float-right text-right">
-          {(props.config.show_filter) ? (
-            <div className="table_filter" style={style.table_filter}>
-              <input
-                type="search"
-                className="form-control"
-                placeholder={props.config.language.filter}
-                onChange={props.filterRecords} />
-            </div>
-          ) : null}
-          <div className="table_tools" style={style.table_tool}>
-            {(props.config.button.excel) ? (
-              <button className="btn btn-primary buttons-excel"
-                tabIndex="0"
-                aria-controls="configuration_tbl"
-                title="Export to Excel"
-                style={style.table_tool_btn}
-                onClick={props.exportToExcel}>
-                <span>
-                  <i className="fa fa-file-excel-o" aria-hidden="true"></i>
-                </span>
-              </button>
-            ) : null}
-            {(props.config.button.csv) ? (
-              <button className="btn btn-primary buttons-csv"
-                tabIndex="0"
-                aria-controls="configuration_tbl"
-                title="Export to CSV"
-                style={style.table_tool_btn}
-                onClick={props.exportToCSV}>
-                <span>
-                  <i className="fa fa-file-text-o" aria-hidden="true"></i>
-                </span>
-              </button>
-            ) : null}
-            {(props.config.button.print) ? (
-              <button className="btn btn-primary buttons-pdf"
-                tabIndex="0"
-                aria-controls="configuration_tbl"
-                title="Export to PDF"
-                style={style.table_tool_btn}
-                onClick={props.exportToPDF}>
-                <span>
-                  <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
-                </span>
-              </button>
-            ) : null}
-            {(props.config.button.extra==true) ? (
-              props.extraButtons.map((elem,index)=>{
-                  elem.clickCount=0;
-                  elem.singleClickTimer='';
-                  return (
-                      <button className={elem.className ? elem.className : "btn btn-primary buttons-pdf"}
-                        tabIndex="0"
-                        aria-controls="configuration_tbl"
-                        title={elem.title?elem.title:"Export to PDF"}
-                        style={style.table_tool_btn}
-                        onClick={(event)=>{
-                          elem.onClick(event);
-                        }}
-                        key={index}>
-                          {elem.children}
-                      </button>
-                  )
-              })
-            ) : null}
-          </div>
-        </div>
-      </div>
-    );
-  } else {
-    return null;
-  }
-}
-
-function TableFooter(props){
-  if(props.config.show_info==true || props.config.show_pagination==true){
-    return (
-      <div className="row table-foot asrt-table-foot" id={(props.id) ? props.id + "-table-foot" : ""}>
-        <div className="col-md-6">
-          {(props.config.show_info) ? props.paginationInfo : null}
-        </div>
-        <div className="col-md-6 pull-right text-right">
-          {(props.config.show_pagination) ? (
-            <nav aria-label="Page navigation" className="pull-right">
-              <ul className="pagination justify-content-end asrt-pagination">
-                {props.config.pagination == "basic" ? (
-                  <Pagination
-                    config={props.config}
-                    isFirst={props.isFirst}
-                    isLast={props.isLast}
-                    pages={props.pages}
-                    page_number={props.page_number}
-                    is_temp_page={props.is_temp_page}
-                    temp_page_number={props.temp_page_number}
-                    previousPage={props.previousPage}
-                    firstPage={props.firstPage}
-                    nextPage={props.nextPage}
-                    lastPage={props.lastPage}
-                    goToPage={props.goToPage}
-                    onPageChange={props.onPageChange}
-                    onPageBlur={props.onPageBlur} />
-                ) : (
-                <ADPagination
-                  isFirst={props.isFirst}
-                  isLast={props.isLast}
-                  pages={props.pages}
-                  page_number={props.page_number}
-                  previousPage={props.previousPage}
-                  nextPage={props.nextPage}
-                  goToPage={props.goToPage}/>
-                )}
-              </ul>
-            </nav>
-          ) : null}
-        </div>
-      </div>
-    );
-  } else {
-    return null;
   }
 }
 
