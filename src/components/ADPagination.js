@@ -5,6 +5,7 @@ export default function ADPagination(props){
   let page = props.page_number;
   let step = 2;
   let tags = [];
+  let { language: { pagination } } = props
 
   let Item = function(props) {
     let className = (props.className) || "";
@@ -45,7 +46,9 @@ export default function ADPagination(props){
       key="p0"
       className={(props.isFirst ? "disabled " : "")}
       onClick={props.previousPage}>
-      &#9668;
+      {pagination.previous
+        ? pagination.previous
+        : <span>&#9668;</span>}
     </Item>
   )
 
@@ -67,7 +70,9 @@ export default function ADPagination(props){
     key="n0"
     className={props.isLast ? "disabled " : ""}
     onClick={props.nextPage}>
-    &#9658;
+    {pagination.next
+      ? pagination.next 
+      : <span>&#9658;</span>}
   </Item>);
 
   return tags;
