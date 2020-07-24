@@ -217,6 +217,7 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | onChange | Function(Object) | This method will call on table actions(page change, sorting, filtering, page length change)
 | onRowClicked | Function(Object) | This method will call when user click on a row, return row object.
 | extraButtons | Object[] | this props will add custom extra buttons to the table tools in the top right of the table header next to the built in export buttons
+| onSort | function(String, Object[], String) | this props will allow you to sort your data/records using any custom sort function. Or according to you if you don't want to use default sort function provided by the Library.
 
 ## Options
 | Name  | Type | default | Description
