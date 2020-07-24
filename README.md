@@ -1,18 +1,27 @@
 # react-datatable
 
+[![npm version](https://img.shields.io/npm/v/@ashvin27/react-datatable.svg)](https://www.npmjs.com/package/@ashvin27/react-datatable)
+[![Known Vulnerabilities](https://snyk.io/test/github/ashvin27/react-datatable/badge.svg?targetFile=package.json)](https://snyk.io/test/github/ashvin27/react-datatable?targetFile=package.json)
+
 ReactDatatable is a component which provide ability to create multifunctional table using single component like jQuery Datatable. It's fully customizable and easy to integrate in any react component. Bootstrap compatible.
 
 ## Features
 * Lightweight
 * Fully customizable (JSX, templates, state, styles, callbacks)
-* Client-side & pagination
+* Client-side & Server Side Pagination
 * Multi-sort
 * Filters
 * Minimal design
 * Fully controllable via optional props and callbacks
 
 ## Example
-[https://ashvin27.github.io/react-datatable/example/](https://ashvin27.github.io/react-datatable/example/)
+[http://react-datatable.in/](http://react-datatable.in/)
+
+## Installation
+With [npm](https://npmjs.org/) installed, run
+```
+npm i @ashvin27/react-datatable
+```
 
 ## Usage
 
@@ -90,7 +99,8 @@ class App extends Component {
             length_menu: [ 10, 20, 50 ],
             button: {
                 excel: true,
-                print: true
+                print: true,
+                extra: true,
             }
         }
         
@@ -130,6 +140,35 @@ class App extends Component {
               }
             ]
         }
+        this.extraButtons =[
+            {
+                className:"btn btn-primary buttons-pdf",
+                title:"Export TEst",
+                children:[
+                    <span>
+                    <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
+                    </span>
+                ],
+                onClick:(event)=>{
+                    console.log(event);
+                },
+            },
+            {
+                className:"btn btn-primary buttons-pdf",
+                title:"Export TEst",
+                children:[
+                    <span>
+                    <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
+                    </span>
+                ],
+                onClick:(event)=>{
+                    console.log(event);
+                },
+                onDoubleClick:(event)=>{
+                    console.log("doubleClick")
+                }
+            },
+        ]
     }
 
     editRecord(record) {
@@ -147,6 +186,7 @@ class App extends Component {
                     config={this.config}
                     records={this.state.records}
                     columns={this.columns}
+                    extraButtons={this.extraButtons}
                 />
             </div>
         )
@@ -166,38 +206,43 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 ## Props
 | Name  | Type | Description
 | ------------- | ------------- | ------------- |
-| config  | Object[]  | This props will used to specify datatable configuration
-| records  | Object[]  | This props will used to pass records/data to datatable
+| className  | String  | Datatable additional class, use to appy additional styling on table
+| tHeadClassName | String | Additional class to be put on the "thead"  of the table
 | columns  | Object[]  | This props will used to specify datatable column configuration
+| config  | Object[]  | This props will used to specify datatable configuration
+| dynamic |  boolean |  This props will used to specify the table data will be server side or static
+| id  | String  | Identifier of datatable
+| records  | Object[]  | This props will used to table records
+| total_record | Number | This props will used to specify the total records in case of table data is server side.
+| onChange | Function(Object) | This method will call on table actions(page change, sorting, filtering, page length change)
+| onRowClicked | Function(Object) | This method will call when user click on a row, return row object.
+| extraButtons | Object[] | this props will add custom extra buttons to the table tools in the top right of the table header next to the built in export buttons
 
 ## Options
 | Name  | Type | default | Description
 | ------------- | ------------- | ------------- | ------------- |
-| className  | String  |   | Datatable additional class, use to appy additional styling on table
-| id  | String  |   | Identifier of datatable
-| page_size  | Number  | 10  | Specify the page length (number of rows per page)
-| length_menu  | Array[]  | [10, 25, 50, 75, 100]  | Specify the options in the page length `select` list.
+| key_column | string | id | Use to specify the key column name for each record
+| button  | Object[]  | { excel: false, print: false, csv: false } | Use to enable/disable export buttons(Excel, CSV, Print). By default buttons are disabled.
 | filename  | String  | "table" | Specify the export filename
-| button  | Object[]  | { excel: false, print: false } | Use to enable/disable export buttons. By default buttons are disabled.
+| length_menu  | Array[]  | [10, 25, 50, 75, 100]  | Specify the options in the page length `select` list.
+| page_size  | Number  | 10  | Specify the page length (number of rows per page)
 | sort  | Object[]  | { column: "", order: "asc" } | Initial sorting order to apply to the datatable
+| show_filter | boolean | true | Use to specify either show or hide filter option
+| show_first | boolean | true | Use to specify either show or hide pagination first button
+| show_info | boolean | true |  Use to specify either show or hide pagination info
+| show_last | boolean | true | Use to specify either show or hide pagination last button
+| show_length_menu | boolean | true | Use to specify either show or hide page length menu
+| show_pagination | boolean | true | Use to specify either show or hide pagination
+| pagination | string | basic | Use to specify the type of pagination. Available types: basic/advance
 
 ## Columns
 | Name  | Type | default | Description
 | ------------- | ------------- | ------------- | ------------- |
-| key  | String  |   | Specify the key of record which value will display in table cell
-| text  | String  |   | Spcify the table column text
-| className  | String  |   | Table column additional class fo styling
 | align  | String  |  left | Specify the content alignment
-| width  | Number  |   | Specify the column width
+| className  | String  |   | Table column additional class fo styling (only for data columns use TrOnlyClassName for headers)
+| TrOnlyClassName | String |  | Header column additional class ( only for headers ) WILL NOT automatically take className value if not set
+| key  | String  |   | Specify the key of record which value will display in table cell
 | sortable  | Boolean  |  false | Specify the column is sortable of not
-| cell  | Function(record):string  |   | You can use any react component or JSX to display content in cells
-
-
-
-## Install
-
-With [npm](https://npmjs.org/) installed, run
-
-```
-npm i @ashvin27/react-datatable
-```
+| text  | String  |   | Specify the table column text
+| width  | Number  |   | Specify the column width
+| cell  | Function(record, index):string  |   | You can use any react component or JSX to display content in cells
