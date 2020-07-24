@@ -138,12 +138,12 @@ class UserList extends Component {
     }
 
     componentDidMount () {
-        // setTimeout(() => {
+        setTimeout(() => {
             this.setState({
                 loading: false,
                 users: users
             })
-        // }, 5000);
+        }, 3000);
     }
 
     editUser(user) {
@@ -162,6 +162,7 @@ class UserList extends Component {
         return (
             <div>
                 <ReactDatatable
+                    className="table table-bordered table-striped custom-class"
                     config={this.config}
                     records={this.state.users}
                     columns={this.columns}

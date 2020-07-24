@@ -23901,12 +23901,14 @@ var UserList = function (_Component) {
     _createClass(UserList, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            // setTimeout(() => {
-            this.setState({
-                loading: false,
-                users: _data2.default
-            });
-            // }, 5000);
+            var _this2 = this;
+
+            setTimeout(function () {
+                _this2.setState({
+                    loading: false,
+                    users: _data2.default
+                });
+            }, 3000);
         }
     }, {
         key: 'editUser',
@@ -23930,6 +23932,7 @@ var UserList = function (_Component) {
                 'div',
                 null,
                 _react2.default.createElement(_index2.default, {
+                    className: 'table table-bordered table-striped custom-class',
                     config: this.config,
                     records: this.state.users,
                     columns: this.columns,
@@ -24245,8 +24248,21 @@ var ReactDatatable = function (_Component) {
       tableHtml += "</tr>";
       tableHtml += "</thead>";
       tableHtml += "<tbody>";
-      for (var i in this.props.records) {
-        var record = this.props.records[i];
+
+      // Filter records before export
+      var filterRecords = this.props.records;
+      if (this.props.dynamic === false) {
+        var records = this.sortRecords(),
+            filterValue = this.state.filter_value;
+        filterRecords = records;
+
+        if (filterValue) {
+          filterRecords = this.filterData(records);
+        }
+      }
+
+      for (var i in filterRecords) {
+        var record = filterRecords[i];
         tableHtml += "<tr>";
         var _iteratorNormalCompletion2 = true;
         var _didIteratorError2 = false;
@@ -24300,7 +24316,6 @@ var ReactDatatable = function (_Component) {
       var filename = this.config.filename ? this.config.filename + '.xls' : 'table.xls';
       // Create download link element
       downloadLink = document.createElement("a");
-      // document.body.appendChild(downloadLink);
       if (navigator.msSaveOrOpenBlob) {
         var blob = new Blob(['\uFEFF', tableHtml], {
           type: dataType
@@ -24355,7 +24370,7 @@ var ReactDatatable = function (_Component) {
     }
   }, {
     key: 'exportToCSV',
-    value: function exportToCSV(headers, items, fileTitle) {
+    value: function exportToCSV() {
       var headers = {};
       // add columns in sheet array
       var _iteratorNormalCompletion3 = true;
@@ -24368,6 +24383,8 @@ var ReactDatatable = function (_Component) {
 
           headers[column.key] = '"' + column.text + '"';
         }
+
+        // Filter records before export
       } catch (err) {
         _didIteratorError3 = true;
         _iteratorError3 = err;
@@ -24383,10 +24400,21 @@ var ReactDatatable = function (_Component) {
         }
       }
 
+      var filterRecords = this.props.records;
+      if (this.props.dynamic === false) {
+        var _records = this.sortRecords(),
+            filterValue = this.state.filter_value;
+        filterRecords = _records;
+
+        if (filterValue) {
+          filterRecords = this.filterData(_records);
+        }
+      }
+
       var records = [];
       // add data rows in sheet array
-      for (var i in this.props.records) {
-        var record = this.props.records[i],
+      for (var i in filterRecords) {
+        var record = filterRecords[i],
             newRecord = {};
         var _iteratorNormalCompletion4 = true;
         var _didIteratorError4 = false;
@@ -24431,11 +24459,11 @@ var ReactDatatable = function (_Component) {
       // Convert Object to JSON
       var jsonObject = JSON.stringify(records);
       var csv = this.convertToCSV(jsonObject);
-      var exportedFilenmae = this.config.filename + '.csv' || 'export.csv';
+      var exportedFilename = this.config.filename + '.csv' || 'export.csv';
       var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       if (navigator.msSaveBlob) {
         // IE 10+
-        navigator.msSaveBlob(blob, exportedFilenmae);
+        navigator.msSaveBlob(blob, exportedFilename);
       } else {
         var link = document.createElement("a");
         if (link.download !== undefined) {
@@ -24443,11 +24471,11 @@ var ReactDatatable = function (_Component) {
           // Browsers that support HTML5 download attribute
           var url = URL.createObjectURL(blob);
           link.setAttribute("href", url);
-          link.setAttribute("download", exportedFilenmae);
+          link.setAttribute("download", exportedFilename);
           link.style.visibility = 'hidden';
           document.body.appendChild(link);
           link.click();
-          document.body.removeChild(link);
+          link.remove();
         }
       }
     }
@@ -24651,7 +24679,7 @@ var ReactDatatable = function (_Component) {
                   _react2.default.createElement(
                     'td',
                     { colSpan: this.props.columns.length, align: 'center' },
-                    this.config.no_data_text
+                    this.config.language.no_data_text
                   )
                 )
               )
