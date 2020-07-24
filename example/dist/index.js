@@ -60,11 +60,26 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports = __webpack_require__(8);
+} else {
+  module.exports = __webpack_require__(9);
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -254,21 +269,6 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(7);
-} else {
-  module.exports = __webpack_require__(8);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -382,7 +382,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 var printWarning = function() {};
 
 if (process.env.NODE_ENV !== 'production') {
-  var ReactPropTypesSecret = __webpack_require__(9);
+  var ReactPropTypesSecret = __webpack_require__(10);
   var loggedTypeFailures = {};
 
   printWarning = function(text) {
@@ -462,25 +462,10 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 
 module.exports = checkPropTypes;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(12);
-} else {
-  module.exports = __webpack_require__(13);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports) {
 
 var g;
@@ -507,21 +492,94 @@ module.exports = g;
 
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports = __webpack_require__(13);
+} else {
+  module.exports = __webpack_require__(14);
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _react = __webpack_require__(1);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _upArrow = __webpack_require__(33);
+
+var _upArrow2 = _interopRequireDefault(_upArrow);
+
+var _downArrow = __webpack_require__(34);
+
+var _downArrow2 = _interopRequireDefault(_downArrow);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  table_body: {
+    marginTop: '16px'
+  },
+  table_size: {
+    background: 'none',
+    border: 'none',
+    padding: 0
+  },
+  table_size_dropdown: {
+    width: '70px',
+    flex: 'none',
+    margin: '0px 10px',
+    display: 'inline-block',
+    float: 'none'
+  },
+  table_filter: {
+    display: 'inline-block',
+    verticalAlign: 'top',
+    marginRight: '5px',
+    width: '250px'
+  },
+  table_tool: {
+    display: 'inline-block',
+    verticalAlign: 'top'
+  },
+  table_tool_btn: {
+    marginRight: '5px'
+  },
+  sort_asc: {
+    backgroundImage: 'url(' + _upArrow2.default + ')'
+  },
+  sort_desc: {
+    backgroundImage: 'url(' + _downArrow2.default + ')'
+  }
+};
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(10);
+var _reactDom = __webpack_require__(11);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _Users = __webpack_require__(18);
+var _Users = __webpack_require__(19);
 
 var _Users2 = _interopRequireDefault(_Users);
 
@@ -530,7 +588,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _reactDom2.default.render(_react2.default.createElement(_Users2.default, null), document.getElementById('root'));
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -561,7 +619,7 @@ __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurrentOwner:K,assign:k
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2406,10 +2464,10 @@ module.exports = react;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2428,7 +2486,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2466,15 +2524,15 @@ if (process.env.NODE_ENV === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(11);
+  module.exports = __webpack_require__(12);
 } else {
-  module.exports = __webpack_require__(14);
+  module.exports = __webpack_require__(15);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2490,7 +2548,7 @@ if (process.env.NODE_ENV === 'production') {
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(1),n=__webpack_require__(2),ba=__webpack_require__(4);function ca(a,b,c,d,e,f,g,h){if(!a){a=void 0;if(void 0===b)a=Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");else{var k=[c,d,e,f,g,h],l=0;a=Error(b.replace(/%s/g,function(){return k[l++]}));a.name="Invariant Violation"}a.framesToPop=1;throw a;}}
+var aa=__webpack_require__(0),n=__webpack_require__(2),ba=__webpack_require__(5);function ca(a,b,c,d,e,f,g,h){if(!a){a=void 0;if(void 0===b)a=Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");else{var k=[c,d,e,f,g,h],l=0;a=Error(b.replace(/%s/g,function(){return k[l++]}));a.name="Invariant Violation"}a.framesToPop=1;throw a;}}
 function t(a){for(var b=arguments.length-1,c="https://reactjs.org/docs/error-decoder.html?invariant="+a,d=0;d<b;d++)c+="&args[]="+encodeURIComponent(arguments[d+1]);ca(!1,"Minified React error #"+a+"; visit %s for the full message or use the non-minified dev environment for full errors and additional helpful warnings. ",c)}aa?void 0:t("227");function da(a,b,c,d,e,f,g,h,k){var l=Array.prototype.slice.call(arguments,3);try{b.apply(c,l)}catch(m){this.onError(m)}}
 var ea=!1,fa=null,ha=!1,ia=null,ja={onError:function(a){ea=!0;fa=a}};function ka(a,b,c,d,e,f,g,h,k){ea=!1;fa=null;da.apply(ja,arguments)}function la(a,b,c,d,e,f,g,h,k){ka.apply(this,arguments);if(ea){if(ea){var l=fa;ea=!1;fa=null}else t("198"),l=void 0;ha||(ha=!0,ia=l)}}var ma=null,na={};
 function oa(){if(ma)for(var a in na){var b=na[a],c=ma.indexOf(a);-1<c?void 0:t("96",a);if(!pa[c]){b.extractEvents?void 0:t("97",a);pa[c]=b;c=b.eventTypes;for(var d in c){var e=void 0;var f=c[d],g=b,h=d;qa.hasOwnProperty(h)?t("99",h):void 0;qa[h]=f;var k=f.phasedRegistrationNames;if(k){for(e in k)k.hasOwnProperty(e)&&ra(k[e],g,h);e=!0}else f.registrationName?(ra(f.registrationName,g,h),e=!0):e=!1;e?void 0:t("98",d,a)}}}}
@@ -2730,7 +2788,7 @@ var ei={default:bi},fi=ei&&bi||ei;module.exports=fi.default||fi;
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2756,10 +2814,10 @@ exports.unstable_scheduleCallback=function(a,b){var c=-1!==k?k:exports.unstable_
 b=c.previous;b.next=c.previous=a;a.next=c;a.previous=b}return a};exports.unstable_cancelCallback=function(a){var b=a.next;if(null!==b){if(b===a)d=null;else{a===d&&(d=b);var c=a.previous;c.next=b;b.previous=c}a.next=a.previous=null}};exports.unstable_wrapCallback=function(a){var b=h;return function(){var c=h,e=k;h=b;k=exports.unstable_now();try{return a.apply(this,arguments)}finally{h=c,k=e,v()}}};exports.unstable_getCurrentPriorityLevel=function(){return h};
 exports.unstable_shouldYield=function(){return!f&&(null!==d&&d.expirationTime<l||w())};
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3398,10 +3456,10 @@ exports.unstable_shouldYield = unstable_shouldYield;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(4)))
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3422,11 +3480,11 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var React = __webpack_require__(1);
+var React = __webpack_require__(0);
 var _assign = __webpack_require__(2);
 var checkPropTypes = __webpack_require__(3);
-var scheduler = __webpack_require__(4);
-var tracing = __webpack_require__(15);
+var scheduler = __webpack_require__(5);
+var tracing = __webpack_require__(16);
 
 /**
  * Use invariant() to assert state which your program assumes to be true.
@@ -23133,25 +23191,25 @@ module.exports = reactDom;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(16);
-} else {
   module.exports = __webpack_require__(17);
+} else {
+  module.exports = __webpack_require__(18);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23168,7 +23226,7 @@ Object.defineProperty(exports,"__esModule",{value:!0});var b=0;exports.__interac
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23593,10 +23651,10 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23608,11 +23666,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _UserList = __webpack_require__(19);
+var _UserList = __webpack_require__(20);
 
 var _UserList2 = _interopRequireDefault(_UserList);
 
@@ -23655,7 +23713,7 @@ var Users = function (_Component) {
 exports.default = Users;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23667,7 +23725,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23791,12 +23849,20 @@ var UserList = function (_Component) {
                 info: "Showing _START_ to _END_ of _TOTAL_ records",
                 pagination: {
                     first: "First",
-                    previous: "Previous",
-                    next: "Next",
+                    previous: _react2.default.createElement(
+                        'span',
+                        null,
+                        '\u25C4'
+                    ),
+                    next: _react2.default.createElement(
+                        'span',
+                        null,
+                        '\u25BA'
+                    ),
                     last: "Last"
                 }
             },
-            pagination: "basic", //advance
+            pagination: "advance", //advance
             show_length_menu: true,
             show_filter: true,
             show_pagination: true,
@@ -23842,7 +23908,7 @@ var UserList = function (_Component) {
                     loading: false,
                     users: _data2.default
                 });
-            }, 5000);
+            }, 3000);
         }
     }, {
         key: 'editUser',
@@ -23873,6 +23939,7 @@ var UserList = function (_Component) {
                 'div',
                 null,
                 _react2.default.createElement(_index2.default, {
+                    className: 'table table-bordered table-striped custom-class',
                     config: this.config,
                     records: this.state.users,
                     columns: this.columns,
@@ -23891,64 +23958,6 @@ var UserList = function (_Component) {
 exports.default = UserList;
 
 /***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _upArrow = __webpack_require__(33);
-
-var _upArrow2 = _interopRequireDefault(_upArrow);
-
-var _downArrow = __webpack_require__(34);
-
-var _downArrow2 = _interopRequireDefault(_downArrow);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-  table_body: {
-    marginTop: '16px'
-  },
-  table_size: {
-    background: 'none',
-    border: 'none',
-    padding: 0
-  },
-  table_size_dropdown: {
-    width: '70px',
-    flex: 'none',
-    margin: '0px 10px',
-    display: 'inline-block',
-    float: 'none'
-  },
-  table_filter: {
-    display: 'inline-block',
-    verticalAlign: 'top',
-    marginRight: '5px',
-    width: '250px'
-  },
-  table_tool: {
-    display: 'inline-block',
-    verticalAlign: 'top'
-  },
-  table_tool_btn: {
-    marginRight: '5px'
-  },
-  sort_asc: {
-    backgroundImage: 'url(' + _upArrow2.default + ')'
-  },
-  sort_desc: {
-    backgroundImage: 'url(' + _downArrow2.default + ')'
-  }
-};
-
-/***/ }),
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23963,7 +23972,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23985,7 +23994,7 @@ var _TableFooter = __webpack_require__(35);
 
 var _TableFooter2 = _interopRequireDefault(_TableFooter);
 
-var _style = __webpack_require__(20);
+var _style = __webpack_require__(6);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -24247,8 +24256,21 @@ var ReactDatatable = function (_Component) {
       tableHtml += "</tr>";
       tableHtml += "</thead>";
       tableHtml += "<tbody>";
-      for (var i in this.props.records) {
-        var record = this.props.records[i];
+
+      // Filter records before export
+      var filterRecords = this.props.records;
+      if (this.props.dynamic === false) {
+        var records = this.sortRecords(),
+            filterValue = this.state.filter_value;
+        filterRecords = records;
+
+        if (filterValue) {
+          filterRecords = this.filterData(records);
+        }
+      }
+
+      for (var i in filterRecords) {
+        var record = filterRecords[i];
         tableHtml += "<tr>";
         var _iteratorNormalCompletion2 = true;
         var _didIteratorError2 = false;
@@ -24302,7 +24324,6 @@ var ReactDatatable = function (_Component) {
       var filename = this.config.filename ? this.config.filename + '.xls' : 'table.xls';
       // Create download link element
       downloadLink = document.createElement("a");
-      // document.body.appendChild(downloadLink);
       if (navigator.msSaveOrOpenBlob) {
         var blob = new Blob(['\uFEFF', tableHtml], {
           type: dataType
@@ -24357,7 +24378,7 @@ var ReactDatatable = function (_Component) {
     }
   }, {
     key: 'exportToCSV',
-    value: function exportToCSV(headers, items, fileTitle) {
+    value: function exportToCSV() {
       var headers = {};
       // add columns in sheet array
       var _iteratorNormalCompletion3 = true;
@@ -24370,6 +24391,8 @@ var ReactDatatable = function (_Component) {
 
           headers[column.key] = '"' + column.text + '"';
         }
+
+        // Filter records before export
       } catch (err) {
         _didIteratorError3 = true;
         _iteratorError3 = err;
@@ -24385,10 +24408,21 @@ var ReactDatatable = function (_Component) {
         }
       }
 
+      var filterRecords = this.props.records;
+      if (this.props.dynamic === false) {
+        var _records = this.sortRecords(),
+            filterValue = this.state.filter_value;
+        filterRecords = _records;
+
+        if (filterValue) {
+          filterRecords = this.filterData(_records);
+        }
+      }
+
       var records = [];
       // add data rows in sheet array
-      for (var i in this.props.records) {
-        var record = this.props.records[i],
+      for (var i in filterRecords) {
+        var record = filterRecords[i],
             newRecord = {};
         var _iteratorNormalCompletion4 = true;
         var _didIteratorError4 = false;
@@ -24433,11 +24467,11 @@ var ReactDatatable = function (_Component) {
       // Convert Object to JSON
       var jsonObject = JSON.stringify(records);
       var csv = this.convertToCSV(jsonObject);
-      var exportedFilenmae = this.config.filename + '.csv' || 'export.csv';
+      var exportedFilename = this.config.filename + '.csv' || 'export.csv';
       var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       if (navigator.msSaveBlob) {
         // IE 10+
-        navigator.msSaveBlob(blob, exportedFilenmae);
+        navigator.msSaveBlob(blob, exportedFilename);
       } else {
         var link = document.createElement("a");
         if (link.download !== undefined) {
@@ -24445,11 +24479,11 @@ var ReactDatatable = function (_Component) {
           // Browsers that support HTML5 download attribute
           var url = URL.createObjectURL(blob);
           link.setAttribute("href", url);
-          link.setAttribute("download", exportedFilenmae);
+          link.setAttribute("download", exportedFilename);
           link.style.visibility = 'hidden';
           document.body.appendChild(link);
           link.click();
-          document.body.removeChild(link);
+          link.remove();
         }
       }
     }
@@ -24653,7 +24687,7 @@ var ReactDatatable = function (_Component) {
                   _react2.default.createElement(
                     'td',
                     { colSpan: this.props.columns.length, align: 'center' },
-                    this.config.no_data_text
+                    this.config.language.no_data_text
                   )
                 )
               )
@@ -24755,7 +24789,7 @@ if (process.env.NODE_ENV === 'production') {
   module.exports = __webpack_require__(24);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 23 */
@@ -24771,7 +24805,7 @@ if (process.env.NODE_ENV === 'production') {
  * LICENSE file in the root directory of this source tree.
  */
 
-var p=__webpack_require__(2),q=__webpack_require__(1);function aa(a,b,e,c,g,d,h,f){if(!a){a=void 0;if(void 0===b)a=Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");else{var B=[e,c,g,d,h,f],A=0;a=Error(b.replace(/%s/g,function(){return B[A++]}));a.name="Invariant Violation"}a.framesToPop=1;throw a;}}
+var p=__webpack_require__(2),q=__webpack_require__(0);function aa(a,b,e,c,g,d,h,f){if(!a){a=void 0;if(void 0===b)a=Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");else{var B=[e,c,g,d,h,f],A=0;a=Error(b.replace(/%s/g,function(){return B[A++]}));a.name="Invariant Violation"}a.framesToPop=1;throw a;}}
 function u(a){for(var b=arguments.length-1,e="https://reactjs.org/docs/error-decoder.html?invariant="+a,c=0;c<b;c++)e+="&args[]="+encodeURIComponent(arguments[c+1]);aa(!1,"Minified React error #"+a+"; visit %s for the full message or use the non-minified dev environment for full errors and additional helpful warnings. ",e)}
 var w="function"===typeof Symbol&&Symbol.for,y=w?Symbol.for("react.portal"):60106,z=w?Symbol.for("react.fragment"):60107,C=w?Symbol.for("react.strict_mode"):60108,D=w?Symbol.for("react.profiler"):60114,E=w?Symbol.for("react.provider"):60109,F=w?Symbol.for("react.context"):60110,G=w?Symbol.for("react.concurrent_mode"):60111,H=w?Symbol.for("react.forward_ref"):60112,I=w?Symbol.for("react.suspense"):60113,J=w?Symbol.for("react.memo"):60115,L=w?Symbol.for("react.lazy"):60116;
 function M(a){if(null==a)return null;if("function"===typeof a)return a.displayName||a.name||null;if("string"===typeof a)return a;switch(a){case G:return"ConcurrentMode";case z:return"Fragment";case y:return"Portal";case D:return"Profiler";case C:return"StrictMode";case I:return"Suspense"}if("object"===typeof a)switch(a.$$typeof){case F:return"Context.Consumer";case E:return"Context.Provider";case H:var b=a.render;b=b.displayName||b.name||"";return a.displayName||(""!==b?"ForwardRef("+b+")":"ForwardRef");
@@ -24832,7 +24866,7 @@ if (process.env.NODE_ENV !== "production") {
 'use strict';
 
 var _assign = __webpack_require__(2);
-var React = __webpack_require__(1);
+var React = __webpack_require__(0);
 var checkPropTypes = __webpack_require__(3);
 
 /**
@@ -28389,7 +28423,7 @@ module.exports = server_browser;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 25 */
@@ -45504,7 +45538,7 @@ module.exports = server_browser;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(26)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(26)(module)))
 
 /***/ }),
 /* 26 */
@@ -46198,11 +46232,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = TableHeader;
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _style = __webpack_require__(20);
+var _style = __webpack_require__(6);
 
 var _style2 = _interopRequireDefault(_style);
 
@@ -46362,7 +46396,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = TableFooter;
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -46410,6 +46444,7 @@ function TableFooter(props) {
               goToPage: props.goToPage,
               onPageChange: props.onPageChange,
               onPageBlur: props.onPageBlur }) : _react2.default.createElement(_ADPagination2.default, {
+              language: props.config.language,
               isFirst: props.isFirst,
               isLast: props.isLast,
               pages: props.pages,
@@ -46438,7 +46473,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = InitialPagination;
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -46525,7 +46560,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = ADPagination;
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -46536,6 +46571,8 @@ function ADPagination(props) {
   var page = props.page_number;
   var step = 2;
   var tags = [];
+  var pagination = props.language.pagination;
+
 
   var Item = function Item(props) {
     var className = props.className || "";
@@ -46613,7 +46650,11 @@ function ADPagination(props) {
       key: "p0",
       className: props.isFirst ? "disabled " : "",
       onClick: props.previousPage },
-    "\u25C4"
+    pagination.previous ? pagination.previous : _react2.default.createElement(
+      "span",
+      null,
+      "\u25C4"
+    )
   ));
 
   if (size < step * 2 + 6) {
@@ -46636,7 +46677,11 @@ function ADPagination(props) {
       key: "n0",
       className: props.isLast ? "disabled " : "",
       onClick: props.nextPage },
-    "\u25BA"
+    pagination.next ? pagination.next : _react2.default.createElement(
+      "span",
+      null,
+      "\u25BA"
+    )
   ));
 
   return tags;
