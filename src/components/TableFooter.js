@@ -31,6 +31,7 @@ export default function TableFooter(props){
                       onPageBlur={props.onPageBlur} />
                   ) : (
                   <ADPagination
+                    language={props.config.language}
                     isFirst={props.isFirst}
                     isLast={props.isLast}
                     pages={props.pages}
