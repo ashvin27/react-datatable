@@ -87,7 +87,7 @@ class ReactDatatable extends Component {
     });
   }
 
-  sortColumn(column, sortOrder) {
+  sortColumn(event, column, sortOrder) {
     if (!column.sortable) return false;
     let newSortOrder = (sortOrder == "asc") ? "desc" : "asc";
     this.setState({
@@ -190,7 +190,7 @@ class ReactDatatable extends Component {
   }
 
   strip(html){
-    var doc = new DOMParser().parseFromString(html, 'text/html');
+    let doc = new DOMParser().parseFromString(html, 'text/html');
     return doc.body.textContent || "";
   }
 
@@ -204,8 +204,21 @@ class ReactDatatable extends Component {
     tableHtml += "</tr>";
     tableHtml += "</thead>";
     tableHtml += "<tbody>";
-    for (let i in this.props.records) {
-      let record = this.props.records[i];
+
+    // Filter records before export
+    let filterRecords = this.props.records;
+    if(this.props.dynamic === false){
+      let records = this.sortRecords(),
+        filterValue = this.state.filter_value;
+        filterRecords = records;
+
+      if (filterValue) {
+        filterRecords = this.filterData(records);
+      }
+    }
+
+    for (let i in filterRecords) {
+      let record = filterRecords[i];
       tableHtml += "<tr>";
       for (let column of this.props.columns) {
         if (column.cell && typeof column.cell === "function") {
@@ -235,9 +248,8 @@ class ReactDatatable extends Component {
     let filename = this.config.filename ? this.config.filename + '.xls':'table.xls';
     // Create download link element
     downloadLink = document.createElement("a");
-    // document.body.appendChild(downloadLink);
     if(navigator.msSaveOrOpenBlob){
-      var blob = new Blob(['\ufeff', tableHtml], {
+      let blob = new Blob(['\ufeff', tableHtml], {
           type: dataType
       });
       navigator.msSaveOrOpenBlob(blob, filename);
@@ -254,13 +266,13 @@ class ReactDatatable extends Component {
   exportToPDF() {
     let tableHtml = this.getExportHtml();
 
-    var style = "<style>";
+    let style = "<style>";
     style = style + "table {width: 100%;font: 17px Calibri;}";
     style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
     style = style + "padding: 2px 3px;text-align:left;}";
     style = style + "</style>";
 
-    var win = window.open('', '_blank');
+    let win = window.open('', '_blank');
     win.document.write('<html><head>');
     win.document.write('<title>' + this.config.filename + '</title>');
     win.document.write(style);
@@ -287,16 +299,29 @@ class ReactDatatable extends Component {
     return str;
   }
 
-  exportToCSV(headers, items, fileTitle){
-    var headers = {};
+  exportToCSV(){
+    let headers = {};
     // add columns in sheet array
     for (let column of this.props.columns) {
       headers[column.key] = '"' + column.text + '"';
     }
-    var records = [];
+
+    // Filter records before export
+    let filterRecords = this.props.records;
+    if(this.props.dynamic === false){
+      let records = this.sortRecords(),
+        filterValue = this.state.filter_value;
+        filterRecords = records;
+
+      if (filterValue) {
+        filterRecords = this.filterData(records);
+      }
+    }
+
+    let records = [];
     // add data rows in sheet array
-    for (let i in this.props.records) {
-      let record = this.props.records[i],
+    for (let i in filterRecords) {
+      let record = filterRecords[i],
         newRecord = {};
       for (let column of this.props.columns) {
         if (column.cell && typeof column.cell === "function") {
@@ -319,21 +344,21 @@ class ReactDatatable extends Component {
     // Convert Object to JSON
     let jsonObject = JSON.stringify(records);
     let csv = this.convertToCSV(jsonObject);
-    let exportedFilenmae = this.config.filename + '.csv' || 'export.csv';
+    let exportedFilename = this.config.filename + '.csv' || 'export.csv';
     let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     if (navigator.msSaveBlob) { // IE 10+
-      navigator.msSaveBlob(blob, exportedFilenmae);
+      navigator.msSaveBlob(blob, exportedFilename);
     } else {
       let link = document.createElement("a");
       if (link.download !== undefined) { // feature detection
         // Browsers that support HTML5 download attribute
         let url = URL.createObjectURL(blob);
         link.setAttribute("href", url);
-        link.setAttribute("download", exportedFilenmae);
+        link.setAttribute("download", exportedFilename);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link);
+        link.remove();
       }
     }
   }
@@ -385,18 +410,18 @@ class ReactDatatable extends Component {
   render() {
     let filterRecords, totalRecords, pages, isFirst, isLast;
     if(this.props.dynamic === false){
-      let records = this.sortRecords(),
+      let records = (this.props.onSort) ? this.props.onSort(this.state.sort.column, this.props.records, this.state.sort.order) : this.sortRecords(),
         filterValue = this.state.filter_value;
         filterRecords = records;
 
       if (filterValue) {
         filterRecords = this.filterData(records);
       }
-      totalRecords = filterRecords.length;
+      totalRecords = Array.isArray(filterRecords) ? filterRecords.length : 0;
       pages = this.pages = this.numPages(totalRecords);
       isFirst = this.isFirst();
       isLast = this.isLast();
-      filterRecords = this.paginate(filterRecords);
+      filterRecords = Array.isArray(filterRecords) ? this.paginate(filterRecords) : [];
     }else{
       filterRecords = this.props.records;
       totalRecords = this.props.total_record;
@@ -454,7 +479,7 @@ class ReactDatatable extends Component {
                         className={classText}
                         width={width}
                         style={columnStyle}
-                        onClick={() => this.sortColumn(column, sortOrder)}>
+                        onClick={event => this.sortColumn(event, column, sortOrder)}>
                         {column.text}
                       </th>);
                     })
@@ -497,7 +522,7 @@ class ReactDatatable extends Component {
                     (
                       <tr>
                         <td colSpan={this.props.columns.length} align="center">
-                          {this.config.no_data_text}
+                          {this.config.language.no_data_text}
                         </td>
                       </tr>
                     )
