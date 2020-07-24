@@ -87,7 +87,7 @@ class ReactDatatable extends Component {
     });
   }
 
-  sortColumn(column, sortOrder) {
+  sortColumn(event, column, sortOrder) {
     if (!column.sortable) return false;
     let newSortOrder = (sortOrder == "asc") ? "desc" : "asc";
     this.setState({
@@ -385,18 +385,18 @@ class ReactDatatable extends Component {
   render() {
     let filterRecords, totalRecords, pages, isFirst, isLast;
     if(this.props.dynamic === false){
-      let records = this.sortRecords(),
+      let records = (this.props.onSort) ? this.props.onSort(this.state.sort.column, this.props.records, this.state.sort.order) : this.sortRecords(),
         filterValue = this.state.filter_value;
         filterRecords = records;
 
       if (filterValue) {
         filterRecords = this.filterData(records);
       }
-      totalRecords = filterRecords.length;
+      totalRecords = Array.isArray(filterRecords) ? filterRecords.length : 0;
       pages = this.pages = this.numPages(totalRecords);
       isFirst = this.isFirst();
       isLast = this.isLast();
-      filterRecords = this.paginate(filterRecords);
+      filterRecords = Array.isArray(filterRecords) ? this.paginate(filterRecords) : [];
     }else{
       filterRecords = this.props.records;
       totalRecords = this.props.total_record;
@@ -454,7 +454,7 @@ class ReactDatatable extends Component {
                         className={classText}
                         width={width}
                         style={columnStyle}
-                        onClick={() => this.sortColumn(column, sortOrder)}>
+                        onClick={event => this.sortColumn(event, column, sortOrder)}>
                         {column.text}
                       </th>);
                     })

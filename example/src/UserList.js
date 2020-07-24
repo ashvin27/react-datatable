@@ -158,6 +158,12 @@ class UserList extends Component {
         console.log("OnPageChange", pageData);
     }
 
+    customSort(column, records, sortOrder) {
+        console.log("column: %s, records: %O, sortOrder: %s", column, records, sortOrder);
+
+        return records;
+    }
+
     render() {
         return (
             <div>
@@ -168,6 +174,7 @@ class UserList extends Component {
                     onPageChange={this.pageChange.bind(this)}
                     extraButtons={this.extraButtons}
                     loading={this.state.loading}
+                    onSort={this.customSort}
                 />
             </div>
         )
