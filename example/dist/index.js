@@ -23926,6 +23926,13 @@ var UserList = function (_Component) {
             console.log("OnPageChange", pageData);
         }
     }, {
+        key: 'customSort',
+        value: function customSort(column, records, sortOrder) {
+            console.log("column: %s, records: %O, sortOrder: %s", column, records, sortOrder);
+
+            return records;
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -23938,7 +23945,8 @@ var UserList = function (_Component) {
                     columns: this.columns,
                     onPageChange: this.pageChange.bind(this),
                     extraButtons: this.extraButtons,
-                    loading: this.state.loading
+                    loading: this.state.loading,
+                    onSort: this.customSort
                 })
             );
         }
@@ -24090,7 +24098,7 @@ var ReactDatatable = function (_Component) {
     }
   }, {
     key: 'sortColumn',
-    value: function sortColumn(column, sortOrder) {
+    value: function sortColumn(event, column, sortOrder) {
       var _this4 = this;
 
       if (!column.sortable) return false;
@@ -24541,18 +24549,18 @@ var ReactDatatable = function (_Component) {
           isFirst = void 0,
           isLast = void 0;
       if (this.props.dynamic === false) {
-        var records = this.sortRecords(),
+        var records = this.props.onSort ? this.props.onSort(this.state.sort.column, this.props.records, this.state.sort.order) : this.sortRecords(),
             filterValue = this.state.filter_value;
         filterRecords = records;
 
         if (filterValue) {
           filterRecords = this.filterData(records);
         }
-        totalRecords = filterRecords.length;
+        totalRecords = Array.isArray(filterRecords) ? filterRecords.length : 0;
         pages = this.pages = this.numPages(totalRecords);
         isFirst = this.isFirst();
         isLast = this.isLast();
-        filterRecords = this.paginate(filterRecords);
+        filterRecords = Array.isArray(filterRecords) ? this.paginate(filterRecords) : [];
       } else {
         filterRecords = this.props.records;
         totalRecords = this.props.total_record;
@@ -24621,8 +24629,8 @@ var ReactDatatable = function (_Component) {
                         className: classText,
                         width: width,
                         style: columnStyle,
-                        onClick: function onClick() {
-                          return _this8.sortColumn(column, sortOrder);
+                        onClick: function onClick(event) {
+                          return _this8.sortColumn(event, column, sortOrder);
                         } },
                       column.text
                     );
