@@ -94,12 +94,12 @@ class UserList extends Component {
                 info: "Showing _START_ to _END_ of _TOTAL_ records",
                 pagination: {
                     first: "First",
-                    previous: "Previous",
-                    next: "Next",
+                    previous: <span>&#9668;</span>,
+                    next: <span>&#9658;</span>,
                     last: "Last"
                 }
             },
-            pagination: "basic", //advance
+            pagination: "advance", //advance
             show_length_menu: true,
             show_filter: true,
             show_pagination: true,

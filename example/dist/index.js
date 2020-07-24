@@ -23849,12 +23849,20 @@ var UserList = function (_Component) {
                 info: "Showing _START_ to _END_ of _TOTAL_ records",
                 pagination: {
                     first: "First",
-                    previous: "Previous",
-                    next: "Next",
+                    previous: _react2.default.createElement(
+                        'span',
+                        null,
+                        '\u25C4'
+                    ),
+                    next: _react2.default.createElement(
+                        'span',
+                        null,
+                        '\u25BA'
+                    ),
                     last: "Last"
                 }
             },
-            pagination: "basic", //advance
+            pagination: "advance", //advance
             show_length_menu: true,
             show_filter: true,
             show_pagination: true,
@@ -46428,6 +46436,7 @@ function TableFooter(props) {
               goToPage: props.goToPage,
               onPageChange: props.onPageChange,
               onPageBlur: props.onPageBlur }) : _react2.default.createElement(_ADPagination2.default, {
+              language: props.config.language,
               isFirst: props.isFirst,
               isLast: props.isLast,
               pages: props.pages,
@@ -46554,6 +46563,8 @@ function ADPagination(props) {
   var page = props.page_number;
   var step = 2;
   var tags = [];
+  var pagination = props.language.pagination;
+
 
   var Item = function Item(props) {
     var className = props.className || "";
@@ -46631,7 +46642,11 @@ function ADPagination(props) {
       key: "p0",
       className: props.isFirst ? "disabled " : "",
       onClick: props.previousPage },
-    "\u25C4"
+    pagination.previous ? pagination.previous : _react2.default.createElement(
+      "span",
+      null,
+      "\u25C4"
+    )
   ));
 
   if (size < step * 2 + 6) {
@@ -46654,7 +46669,11 @@ function ADPagination(props) {
       key: "n0",
       className: props.isLast ? "disabled " : "",
       onClick: props.nextPage },
-    "\u25BA"
+    pagination.next ? pagination.next : _react2.default.createElement(
+      "span",
+      null,
+      "\u25BA"
+    )
   ));
 
   return tags;
