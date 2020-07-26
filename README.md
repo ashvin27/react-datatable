@@ -216,8 +216,9 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | total_record | Number | This props will used to specify the total records in case of table data is server side.
 | onChange | Function(Object) | This method will call on table actions(page change, sorting, filtering, page length change)
 | onRowClicked | Function(Object) | This method will call when user click on a row, return row object.
-| extraButtons | Object[] | this props will add custom extra buttons to the table tools in the top right of the table header next to the built in export buttons
-| onSort | function(String, Object[], String) | this props will allow you to sort your data/records using any custom sort function. Or according to you if you don't want to use default sort function provided by the Library.
+| extraButtons | Object[] | This props will add custom extra buttons to the table tools in the top right of the table header next to the built in export buttons
+| onSort | function(String, Object[], String) | This props will allow you to sort your data/records using any custom sort function. Or according to you if you don't want to use default sort function provided by the Library.
+| loading | Boolean(default false) | This props will allow you to display a loading in table while data is fetching from the server.
 
 ## Options
 | Name  | Type | default | Description
