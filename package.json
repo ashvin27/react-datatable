@@ -1,6 +1,6 @@
 {
   "name": "@ashvin27/react-datatable",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "ReactDatatable is a component which provide ability to create multifunctional table using single component like jQuery Datatable",
   "main": "./lib/index.js",
   "author": {
@@ -18,7 +18,7 @@
     "type": "git",
     "url": "git+https://github.com/ashvin27/react-datatable.git"
   },
-  "publishConfig": { 
+  "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
   "scripts": {
