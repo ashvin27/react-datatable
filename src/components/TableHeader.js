@@ -1,4 +1,5 @@
 import React from 'react';
+import includes from 'lodash/includes';
 import style from '../style';
 
 export default function TableHeader(props){
@@ -17,7 +18,7 @@ export default function TableHeader(props){
                     {(props.lengthMenuText[0]) ? props.lengthMenuText[0] : ''}
                   </span>
                 </div>
-                {(_.includes(props.config.language.length_menu, '_MENU_')) ? (
+                {(includes(props.config.language.length_menu, '_MENU_')) ? (
                   <select type="text" className="form-control" style={style.table_size_dropdown}
                     onChange={props.changePageSize}>
                     {props.config.length_menu.map((value, key) => {
