@@ -19,8 +19,11 @@ export default function TableHeader(props){
                   </span>
                 </div>
                 {(includes(props.config.language.length_menu, '_MENU_')) ? (
-                  <select type="text" className="form-control" style={style.table_size_dropdown}
-                    onChange={props.changePageSize}>
+                  <select type="text" 
+                    className="form-control"
+                    style={style.table_size_dropdown}
+                    onChange={props.changePageSize}
+                    value={props.pageSize}>
                     {props.config.length_menu.map((value, key) => {
                       return (<option key={value}>{value}</option>);
                     })}
@@ -42,7 +45,8 @@ export default function TableHeader(props){
                   type="search"
                   className="form-control"
                   placeholder={props.config.language.filter}
-                  onChange={props.filterRecords} />
+                  onChange={props.filterRecords}
+                  value={props.filterValue} />
               </div>
             ) : null}
             <div className="table_tools" style={style.table_tool}>

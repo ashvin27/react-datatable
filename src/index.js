@@ -13,6 +13,7 @@ import './assets/css/style.css';
 import TableHeader from './components/TableHeader';
 import TableFooter from './components/TableFooter';
 import style from './style';
+import SaveState from './components/saveState';
 
 class ReactDatatable extends Component {
 
@@ -28,6 +29,7 @@ class ReactDatatable extends Component {
     this.filterRecords = this.filterRecords.bind(this);
     this.filterData = this.filterData.bind(this);
     this.sortRecords = this.sortRecords.bind(this);
+    this.saveState = this.saveState.bind(this);
     this.config = {
       button: {
         excel: (props.config && props.config.button && props.config.button.excel) ? props.config.button.excel : false,
@@ -57,7 +59,8 @@ class ReactDatatable extends Component {
       show_info: (props.config.show_info != undefined) ? props.config.show_info : true,
       show_first: (props.config.show_first != undefined) ? props.config.show_first : true,
       show_last: (props.config.show_last != undefined) ? props.config.show_last : true,
-      pagination: (props.config.pagination) ? props.config.pagination : 'basic'
+      pagination: (props.config.pagination) ? props.config.pagination : 'basic',
+      save_state: props.config.save_state ? props.config.save_state : false
     };
     this.state = {
       is_temp_page: false,
@@ -66,6 +69,32 @@ class ReactDatatable extends Component {
       page_number: 1,
       sort: (props.config && props.config.sort) ? props.config.sort : false
     };
+
+    this.saveStateObj = new SaveState(this.props.id);
+    let savedState = {};
+    if(this.props.config.save_state) {
+      savedState = this.saveStateObj.getState();
+      console.log("savedState", savedState);
+      console.log("this.state before saved state", this.state);
+      this.state = Object.assign(this.state, savedState);
+      console.log("this.state after saved state", this.state)
+    }
+  }
+
+  componentDidMount () {
+    // If save state is set to true then save table state
+    if(this.props.config.save_state) {
+      this.saveState();
+    }
+  }
+
+  saveState () {
+    this.saveStateObj.save({
+      filter_value: this.state.filter_value,
+      page_number: this.state.page_number,
+      page_size: this.state.page_size,
+      sort: this.state.sort
+    });
   }
 
   filterRecords(e) {
@@ -371,6 +400,7 @@ class ReactDatatable extends Component {
       sort_order: this.state.sort
     };
     this.props.onChange(tableData);
+    this.saveState();
   }
 
   filterData(records) {
@@ -422,7 +452,7 @@ class ReactDatatable extends Component {
       isFirst = this.isFirst();
       isLast = this.isLast();
       filterRecords = Array.isArray(filterRecords) ? this.paginate(filterRecords) : [];
-    }else{
+    } else {
       filterRecords = this.props.records;
       totalRecords = this.props.total_record;
       pages = this.pages = this.numPages(totalRecords);
@@ -452,7 +482,9 @@ class ReactDatatable extends Component {
           exportToExcel={this.exportToExcel.bind(this)}
           exportToCSV={this.exportToCSV.bind(this)}
           exportToPDF={this.exportToPDF.bind(this)}
-          extraButtons={this.props.extraButtons}/>
+          extraButtons={this.props.extraButtons}
+          pageSize={this.state.page_size}
+          filterValue={this.state.filter_value}/>
         <div className="row table-body asrt-table-body" style={style.table_body} id={(this.props.id) ? this.props.id + "-table-body" : ""}>
           <div className="col-md-12">
             <table className={this.props.className} id={this.props.id}>
@@ -597,7 +629,8 @@ ReactDatatable.defaultProps = {
     show_pagination: true,
     show_info: true,
     show_first: true,
-    show_last: true
+    show_last: true,
+    save_state: false
   },
   dynamic: false,
   records: [],

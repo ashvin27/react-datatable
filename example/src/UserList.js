@@ -104,9 +104,10 @@ class UserList extends Component {
             show_filter: true,
             show_pagination: true,
             show_info: true,
+            save_state: true
         };
 
-        this.extraButtons =[
+        this.extraButtons = [
             {
               className:"btn btn-primary buttons-pdf",
               title:"Export TEst",
@@ -138,12 +139,12 @@ class UserList extends Component {
     }
 
     componentDidMount () {
-        setTimeout(() => {
+        // setTimeout(() => {
             this.setState({
                 loading: false,
                 users: users
             })
-        }, 3000);
+        // }, 3000);
     }
 
     editUser(user) {
