@@ -244,7 +244,8 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | className  | String  |   | Table column additional class fo styling (only for data columns use TrOnlyClassName for headers)
 | TrOnlyClassName | String |  | Header column additional class ( only for headers ) WILL NOT automatically take className value if not set
 | key  | String  |   | Specify the key of record which value will display in table cell
-| sortable  | Boolean  |  false | Specify the column is sortable of not
+| sortable  | Boolean  |  false | Specify the column is sortable or not
+| export  | Boolean  | true  | Specify the column can be exported to documents or not
 | text  | String  |   | Specify the table column text
 | width  | Number  |   | Specify the column width
 | cell  | Function(record, index):string  |   | You can use any react component or JSX to display content in cells
