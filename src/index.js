@@ -199,7 +199,9 @@ class ReactDatatable extends Component {
     tableHtml += "<thead>";
     tableHtml += "<tr>";
     for (let column of this.props.columns) {
-      tableHtml += "<th>" + column.text + "</th>";
+      if((column.export!==undefined)?column.export:true){
+        tableHtml += "<th>" + column.text + "</th>";
+      }
     }
     tableHtml += "</tr>";
     tableHtml += "</thead>";
@@ -221,14 +223,16 @@ class ReactDatatable extends Component {
       let record = filterRecords[i];
       tableHtml += "<tr>";
       for (let column of this.props.columns) {
-        if (column.cell && typeof column.cell === "function") {
-          let cellData =  ReactDOMServer.renderToStaticMarkup(column.cell(record, i));
-              cellData = this.strip(cellData);
-          tableHtml += "<td>" + cellData + "</td>";
-        }else if (record[column.key]) {
-          tableHtml += "<td>" + record[column.key] + "</td>";
-        } else {
-          tableHtml += "<td></td>";
+        if((column.export!==undefined)?column.export:true){
+          if (column.cell && typeof column.cell === "function") {
+            let cellData =  ReactDOMServer.renderToStaticMarkup(column.cell(record, i));
+                cellData = this.strip(cellData);
+            tableHtml += "<td>" + cellData + "</td>";
+          }else if (record[column.key]) {
+            tableHtml += "<td>" + record[column.key] + "</td>";
+          } else {
+            tableHtml += "<td></td>";
+          }
         }
       }
       tableHtml += "</tr>";
@@ -303,7 +307,9 @@ class ReactDatatable extends Component {
     let headers = {};
     // add columns in sheet array
     for (let column of this.props.columns) {
-      headers[column.key] = '"' + column.text + '"';
+      if((column.export!==undefined)?column.export:true){
+        headers[column.key] = '"' + column.text + '"';
+      }
     }
 
     // Filter records before export
@@ -324,16 +330,18 @@ class ReactDatatable extends Component {
       let record = filterRecords[i],
         newRecord = {};
       for (let column of this.props.columns) {
-        if (column.cell && typeof column.cell === "function") {
-          let cellData =  ReactDOMServer.renderToStaticMarkup(column.cell(record, i));
-              cellData = this.strip(cellData);
-          newRecord[column.key] = cellData;
-        } else if (record[column.key]) {
-          let colValue  = record[column.key];
-          colValue = (typeof colValue === "string") ? colValue.replace(/"/g, '""') : colValue;
-          newRecord[column.key] = '"' + colValue + '"';
-        } else {
-          newRecord[column.key] = "";
+        if((column.export!==undefined)?column.export:true){
+          if (column.cell && typeof column.cell === "function") {
+            let cellData =  ReactDOMServer.renderToStaticMarkup(column.cell(record, i));
+                cellData = this.strip(cellData);
+            newRecord[column.key] = cellData;
+          } else if (record[column.key]) {
+            let colValue  = record[column.key];
+            colValue = (typeof colValue === "string") ? colValue.replace(/"/g, '""') : colValue;
+            newRecord[column.key] = '"' + colValue + '"';
+          } else {
+            newRecord[column.key] = "";
+          }
         }
       }
       records.push(newRecord);
