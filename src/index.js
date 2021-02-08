@@ -186,7 +186,7 @@ class ReactDatatable extends Component {
 
   onPageBlur(e){
     let pageNumber = e.target.value;
-    this.goToPage(event, pageNumber);
+    this.goToPage(e, pageNumber);
   }
 
   strip(html){
