@@ -36,6 +36,7 @@ class ReactDatatable extends Component {
         extra : (props.config && props.config.button && props.config.button.extra) ? props.config.button.extra : false,
       },
       filename: (props.config && props.config.filename) ? props.config.filename : "table",
+      fa5_support: (props.config && props.config.fa5_support) ? props.config.fa5_support : false,
       key_column: props.config && props.config.key_column ? props.config.key_column : "id",
       language: {
         length_menu: (props.config && props.config.language && props.config.language.length_menu) ? props.config.language.length_menu : "Show _MENU_ records per page",
@@ -515,7 +516,7 @@ class ReactDatatable extends Component {
                             this.props.columns.map((column, colIndex) => {
                               if (column.cell && typeof column.cell === "function") {
                                 return (<td className={column.className} key={(column.key) ? column.key : column.text}>{column.cell(record,rowIndex)}</td>);
-                              }else if (record[column.key]) {
+                              }else if (record[column.key]!==undefined) {
                                 return (<td className={column.className} key={(column.key) ? column.key : column.text}>
                                   {record[column.key]}
                                 </td>);
@@ -581,6 +582,7 @@ ReactDatatable.defaultProps = {
       csv: false
     },
     filename: "table",
+    fa5_support: false,
     key_column:"id",
     language: {
       length_menu: "Show _MENU_ records per page",
