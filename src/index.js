@@ -229,7 +229,7 @@ class ReactDatatable extends Component {
             let cellData =  ReactDOMServer.renderToStaticMarkup(column.cell(record, i));
                 cellData = this.strip(cellData);
             tableHtml += "<td>" + cellData + "</td>";
-          }else if (record[column.key]) {
+          }else if (record[column.key]!==undefined) {
             tableHtml += "<td>" + record[column.key] + "</td>";
           } else {
             tableHtml += "<td></td>";
@@ -336,7 +336,7 @@ class ReactDatatable extends Component {
             let cellData =  ReactDOMServer.renderToStaticMarkup(column.cell(record, i));
                 cellData = this.strip(cellData);
             newRecord[column.key] = cellData;
-          } else if (record[column.key]) {
+          } else if (record[column.key]!==undefined) {
             let colValue  = record[column.key];
             colValue = (typeof colValue === "string") ? colValue.replace(/"/g, '""') : colValue;
             newRecord[column.key] = '"' + colValue + '"';
