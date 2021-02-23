@@ -28,7 +28,7 @@
     "prepare": "npm run snyk-protect"
   },
   "dependencies": {
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
     "react": "^16.0.0",
