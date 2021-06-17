@@ -1,5 +1,5 @@
-#Contribution
-The owner is no longer able to support this repository, if anyone wants can contribute to add new feature and resolve the issue. So please use it carefully.
+# Contribution
+The owner is no longer able to support this repository, if anyone wants can contribute to add new feature and resolve the issues. So please use it carefully.
 
 # react-datatable
 
