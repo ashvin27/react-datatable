@@ -1,5 +1,5 @@
 # Contribution
-The owner is no longer able to support this repository, if anyone wants can contribute to add new feature and resolve the issues. So please use it carefully.
+  **I'm back**: I will continue on it to resolve the bugs and add new features. If anyone wants can also contibutes to it.
 
 # react-datatable
 
