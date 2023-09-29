@@ -36,6 +36,7 @@ class ReactDatatable extends Component {
         extra : (props.config && props.config.button && props.config.button.extra) ? props.config.button.extra : false,
       },
       filename: (props.config && props.config.filename) ? props.config.filename : "table",
+      fa5_support: (props.config && props.config.fa5_support) ? props.config.fa5_support : false,
       key_column: props.config && props.config.key_column ? props.config.key_column : "id",
       language: {
         length_menu: (props.config && props.config.language && props.config.language.length_menu) ? props.config.language.length_menu : "Show _MENU_ records per page",
@@ -186,7 +187,7 @@ class ReactDatatable extends Component {
 
   onPageBlur(e){
     let pageNumber = e.target.value;
-    this.goToPage(event, pageNumber);
+    this.goToPage(e, pageNumber);
   }
 
   strip(html){
@@ -199,7 +200,9 @@ class ReactDatatable extends Component {
     tableHtml += "<thead>";
     tableHtml += "<tr>";
     for (let column of this.props.columns) {
-      tableHtml += "<th>" + column.text + "</th>";
+      if((column.export!==undefined)?column.export:true){
+        tableHtml += "<th>" + column.text + "</th>";
+      }
     }
     tableHtml += "</tr>";
     tableHtml += "</thead>";
@@ -221,14 +224,16 @@ class ReactDatatable extends Component {
       let record = filterRecords[i];
       tableHtml += "<tr>";
       for (let column of this.props.columns) {
-        if (column.cell && typeof column.cell === "function") {
-          let cellData =  ReactDOMServer.renderToStaticMarkup(column.cell(record, i));
-              cellData = this.strip(cellData);
-          tableHtml += "<td>" + cellData + "</td>";
-        }else if (record[column.key]) {
-          tableHtml += "<td>" + record[column.key] + "</td>";
-        } else {
-          tableHtml += "<td></td>";
+        if((column.export!==undefined)?column.export:true){
+          if (column.cell && typeof column.cell === "function") {
+            let cellData =  ReactDOMServer.renderToStaticMarkup(column.cell(record, i));
+                cellData = this.strip(cellData);
+            tableHtml += "<td>" + cellData + "</td>";
+          }else if (record[column.key]!==undefined) {
+            tableHtml += "<td>" + record[column.key] + "</td>";
+          } else {
+            tableHtml += "<td></td>";
+          }
         }
       }
       tableHtml += "</tr>";
@@ -303,7 +308,9 @@ class ReactDatatable extends Component {
     let headers = {};
     // add columns in sheet array
     for (let column of this.props.columns) {
-      headers[column.key] = '"' + column.text + '"';
+      if((column.export!==undefined)?column.export:true){
+        headers[column.key] = '"' + column.text + '"';
+      }
     }
 
     // Filter records before export
@@ -324,16 +331,18 @@ class ReactDatatable extends Component {
       let record = filterRecords[i],
         newRecord = {};
       for (let column of this.props.columns) {
-        if (column.cell && typeof column.cell === "function") {
-          let cellData =  ReactDOMServer.renderToStaticMarkup(column.cell(record, i));
-              cellData = this.strip(cellData);
-          newRecord[column.key] = cellData;
-        } else if (record[column.key]) {
-          let colValue  = record[column.key];
-          colValue = (typeof colValue === "string") ? colValue.replace(/"/g, '""') : colValue;
-          newRecord[column.key] = '"' + colValue + '"';
-        } else {
-          newRecord[column.key] = "";
+        if((column.export!==undefined)?column.export:true){
+          if (column.cell && typeof column.cell === "function") {
+            let cellData =  ReactDOMServer.renderToStaticMarkup(column.cell(record, i));
+                cellData = this.strip(cellData);
+            newRecord[column.key] = cellData;
+          } else if (record[column.key]!==undefined) {
+            let colValue  = record[column.key];
+            colValue = (typeof colValue === "string") ? colValue.replace(/"/g, '""') : colValue;
+            newRecord[column.key] = '"' + colValue + '"';
+          } else {
+            newRecord[column.key] = "";
+          }
         }
       }
       records.push(newRecord);
@@ -507,7 +516,7 @@ class ReactDatatable extends Component {
                             this.props.columns.map((column, colIndex) => {
                               if (column.cell && typeof column.cell === "function") {
                                 return (<td className={column.className} key={(column.key) ? column.key : column.text}>{column.cell(record,rowIndex)}</td>);
-                              }else if (record[column.key]) {
+                              }else if (record[column.key]!==undefined) {
                                 return (<td className={column.className} key={(column.key) ? column.key : column.text}>
                                   {record[column.key]}
                                 </td>);
@@ -573,6 +582,7 @@ ReactDatatable.defaultProps = {
       csv: false
     },
     filename: "table",
+    fa5_support: false,
     key_column:"id",
     language: {
       length_menu: "Show _MENU_ records per page",

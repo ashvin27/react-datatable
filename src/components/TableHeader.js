@@ -3,6 +3,7 @@ import includes from 'lodash/includes';
 import style from '../style';
 
 export default function TableHeader(props){
+  console.log(props)
     if(props.config.show_length_menu == true 
         || props.config.show_filter == true
         || props.config.button.excel == true
@@ -54,7 +55,7 @@ export default function TableHeader(props){
                   style={style.table_tool_btn}
                   onClick={props.exportToExcel}>
                   <span>
-                    <i className="fa fa-file-excel-o" aria-hidden="true"></i>
+                    <i className={(props&&props.config&&props.config.fa5_support)?"fas fa-file-excel":"fa fa-file-excel-o"} aria-hidden="true"></i>
                   </span>
                 </button>
               ) : null}
@@ -66,7 +67,7 @@ export default function TableHeader(props){
                   style={style.table_tool_btn}
                   onClick={props.exportToCSV}>
                   <span>
-                    <i className="fa fa-file-text-o" aria-hidden="true"></i>
+                    <i className={(props&&props.config&&props.config.fa5_support)?"fas fa-file-csv":"fa fa-file-text-o"} aria-hidden="true"></i>
                   </span>
                 </button>
               ) : null}
@@ -78,7 +79,7 @@ export default function TableHeader(props){
                   style={style.table_tool_btn}
                   onClick={props.exportToPDF}>
                   <span>
-                    <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
+                    <i className={"glyphicon glyphicon-print "+((props&&props.config&&props.config.fa5_support)?"fas fa-print":"fa fa-print")} aria-hidden="true"></i>
                   </span>
                 </button>
               ) : null}

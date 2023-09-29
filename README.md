@@ -229,6 +229,7 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | key_column | string | id | Use to specify the key column name for each record
 | button  | Object[]  | { excel: false, print: false, csv: false } | Use to enable/disable export buttons(Excel, CSV, Print). By default buttons are disabled.
 | filename  | String  | "table" | Specify the export filename
+| fa5_support | Boolean | false | Enables support of Font Awesome 5 for icons
 | length_menu  | Array[]  | [10, 25, 50, 75, 100]  | Specify the options in the page length `select` list.
 | page_size  | Number  | 10  | Specify the page length (number of rows per page)
 | sort  | Object[]  | { column: "", order: "asc" } | Initial sorting order to apply to the datatable
@@ -247,7 +248,8 @@ var ReactDatatable = require('@ashvin27/react-datatable')
 | className  | String  |   | Table column additional class fo styling (only for data columns use TrOnlyClassName for headers)
 | TrOnlyClassName | String |  | Header column additional class ( only for headers ) WILL NOT automatically take className value if not set
 | key  | String  |   | Specify the key of record which value will display in table cell
-| sortable  | Boolean  |  false | Specify the column is sortable of not
+| sortable  | Boolean  |  false | Specify the column is sortable or not
+| export  | Boolean  | true  | Specify the column can be exported to documents or not
 | text  | String  |   | Specify the table column text
 | width  | Number  |   | Specify the column width
 | cell  | Function(record, index):string  |   | You can use any react component or JSX to display content in cells
