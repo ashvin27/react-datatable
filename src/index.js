@@ -378,8 +378,8 @@ class ReactDatatable extends Component {
     return records.filter((record) => {
       let allow = false;
       _.each(this.props.columns, (column, key) => {
-        if (record[column.key]) {
-          allow = _.includes(record[column.key].toString().toLowerCase(), filterValue.toString().toLowerCase()) ? true : allow;
+        if (_.has(record(column.key)) {
+          allow = _.includes(_.get(record, column.key).toString().toLowerCase(), filterValue.toString().toLowerCase()) ? true : allow;
         }
       });
       return allow;
