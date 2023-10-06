@@ -25,16 +25,30 @@
     "transpile": "babel src -d lib --copy-files",
     "prepublishOnly": "npm run transpile",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "webpack": "^5.88.2"
   },
   "peerDependencies": {
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.22.20",
+    "@babel/preset-react": "^7.22.15",
+    "@storybook/addon-essentials": "^7.4.6",
+    "@storybook/addon-interactions": "^7.4.6",
+    "@storybook/addon-links": "^7.4.6",
+    "@storybook/addon-mdx-gfm": "^7.4.6",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.4.6",
+    "@storybook/react": "^7.4.6",
+    "@storybook/react-webpack5": "^7.4.6",
+    "@storybook/testing-library": "^0.2.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
@@ -45,13 +59,14 @@
     "babel-runtime": "^6.26.0",
     "css-loader": "^2.0.0",
     "file-loader": "^2.0.0",
+    "prop-types": "^15.8.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-scripts": "5.0.1",
     "snyk": "^1.679.0",
+    "storybook": "^7.4.6",
     "style-loader": "^0.23.1",
-    "url-loader": "^1.1.2",
-    "webpack": "^3.10.0"
+    "url-loader": "^1.1.2"
   },
   "keywords": [
     "react-datatable",
