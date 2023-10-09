@@ -1,7 +1,7 @@
-import ReactDatatable from '..';
+import ReactDatatable from '../index';
 import users from '../../example/data/data.json';
 
-export default {
+const meta = {
   title: 'Example/ReactDatatable',
   component: ReactDatatable,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
@@ -11,6 +11,8 @@ export default {
     layout: 'fullscreen',
   },
 };
+
+
 
 const columns = [
     {
@@ -148,3 +150,7 @@ export const Default = {
     extraButtons,
   },
 };
+
+export default meta;
+
+
