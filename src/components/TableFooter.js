@@ -39,7 +39,8 @@ export default function TableFooter(props){
                     previousPage={props.previousPage}
                     nextPage={props.nextPage}
                     goToPage={props.goToPage}/>
-                  )}
+                  )
+                  }
                 </ul>
               </nav>
             ) : null}

@@ -1,5 +1,6 @@
-import ReactDatatable from '..';
-import users from '../../example/data/data.json';
+import React from 'react';
+import ReactDatatable from '../src';
+import users from '../example/data/data.json';
 
 export default {
   title: 'Example/ReactDatatable',
@@ -113,7 +114,7 @@ const extraButtons =[
       title:"Export TEst",
       children:[
           <span>
-            <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
+            Button
           </span>
       ],
       onClick:(event)=>{
@@ -125,7 +126,7 @@ const extraButtons =[
         title:"Export TEst",
         children:[
           <span>
-            <i className="glyphicon glyphicon-print fa fa-print" aria-hidden="true"></i>
+            Button
           </span>
         ],
         onClick:(event)=>{
