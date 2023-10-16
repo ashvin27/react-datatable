@@ -1,45 +1,42 @@
-const webpack = require('webpack'),
-    path = require('path');
-  
+const path = require("path");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const nodeExternals = require("webpack-node-externals");
+
 module.exports = {
-    entry: './example/src/index.js',
-    output: {
-        path: path.resolve(__dirname, 'example/dist'),
-        filename: 'index.js',
-        // libraryTarget: 'commonjs2'
+  entry: "./src/index.js",
+  externals: [nodeExternals()],
+  mode: "development",
+  output: {
+    filename: "index.js",
+    path: path.resolve(__dirname, "dist"),
+    library: {
+      name: "AnotherReactComponentLibrary",
+      type: "umd",
     },
-    watch: true,
-    plugins: [
-        new webpack.DefinePlugin({
-          'process.env.NODE_ENV': JSON.stringify('development') // production development
-        }),
-        new webpack.optimize.UglifyJsPlugin(),
-        new webpack.HotModuleReplacementPlugin()
-    ],
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: /(node_modules|bower_components|build)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['env', 'react']
-                    }
-                }
-                
+  },
+  plugins: [new CleanWebpackPlugin()],
+  module: {
+    rules: [
+        {
+            test: /\.(js|jsx)$/,
+            exclude: /node_modules/,
+            use: {
+                loader: "babel-loader",
+                options: {
+                    presets: ["@babel/preset-env", "@babel/preset-react"],
+                },
             },
-            {
-                test: /\.css$/,
-                use: ["style-loader", "css-loader"]
-            },
-            {
-                test: /\.(png|jpg|gif)$/i,
-                use: {
-                    loader: 'url-loader',
-                    options: {}
-                }
+        },
+        {
+            test: /\.css$/,
+            use: ["style-loader", "css-loader"]
+        },
+        {
+            test: /\.(png|jpg|gif)$/i,
+            use: {
+                loader: 'url-loader',
             }
-        ]
-    },
+        }
+    ],
+  },
 };
