@@ -1,52 +1,80 @@
-import React, { Fragment } from 'react';
+import React, { Fragment } from "react";
 
-export default function InitialPagination(props) {
-    return (
-      <Fragment>
-        {(props.config.show_first) ? (
-          <li className={(props.isFirst ? "disabled " : "") + "page-item"}>
-            <a href='#' className="page-link" tabIndex="-1"
-              onClick={props.firstPage}>
-              {props.config.language.pagination.first}
-            </a>
-          </li>
-        ) : null}
-        <li className={(props.isFirst ? "disabled " : "") + "page-item"}>
-          <a href='#' className="page-link" tabIndex="-1"
-            onClick={props.previousPage}>
-            {props.config.language.pagination.previous}
+const InitialPagination = ({
+  isFirst,
+  firstPage,
+  previousPage,
+  is_temp_page,
+  temp_page_number,
+  page_number,
+  onPageBlur,
+  onPageChange,
+  nextPage,
+  isLast,
+}) => {
+  return (
+    <Fragment>
+      {props.config.show_first ? (
+        <li className={(isFirst ? "disabled " : "") + "page-item"}>
+          <a
+            href="#"
+            className="page-link"
+            tabIndex="-1"
+            onClick={firstPage}
+          >
+            {props.config.language.pagination.first}
           </a>
         </li>
-        <li className="page-item">
-          <a className="page-link">
-            <input style={{
-                  border: 'none',
-                  padding: '0',
-                  maxWidth: '30px',
-                  textAlign: 'center',
-                  display: 'inline-block'
+      ) : null}
+      <li className={(isFirst ? "disabled " : "") + "page-item"}>
+        <a
+          href="#"
+          className="page-link"
+          tabIndex="-1"
+          onClick={previousPage}
+        >
+          {props.config.language.pagination.previous}
+        </a>
+      </li>
+      <li className="page-item">
+        <a className="page-link">
+          <input
+            style={{
+              border: "none",
+              padding: "0",
+              maxWidth: "30px",
+              textAlign: "center",
+              display: "inline-block",
             }}
-              type="text"
-              value={(props.is_temp_page) ? props.temp_page_number : props.page_number}
-              onChange={(e) => props.onPageChange(e, true)}
-              onBlur={props.onPageBlur}
-              onKeyDown={props.onPageChange}/>
+            type="text"
+            value={
+              is_temp_page ? temp_page_number : page_number
+            }
+            onChange={(e) => onPageChange(e, true)}
+            onBlur={onPageBlur}
+            onKeyDown={onPageChange}
+          />
+        </a>
+      </li>
+      <li className={(isLast ? "disabled " : "") + "page-item"}>
+        <a href="#" className="page-link" onClick={nextPage}>
+          {props.config.language.pagination.next}
+        </a>
+      </li>
+      {props.config.show_last ? (
+        <li className={(isLast ? "disabled " : "") + "page-item"}>
+          <a
+            href="#"
+            className="page-link"
+            tabIndex="-1"
+            onClick={lastPage}
+          >
+            {props.config.language.pagination.last}
           </a>
         </li>
-        <li className={(props.isLast ? "disabled " : "") + "page-item"}>
-          <a href='#' className="page-link"
-            onClick={props.nextPage}>
-            {props.config.language.pagination.next}
-          </a>
-        </li>
-        {(props.config.show_last) ? (
-          <li className={(props.isLast ? "disabled " : "") + "page-item"}>
-            <a href='#' className="page-link" tabIndex="-1"
-              onClick={props.lastPage}>
-              {props.config.language.pagination.last}
-            </a>
-          </li>
-        ) : null}
-      </Fragment>
-    )
-}
+      ) : null}
+    </Fragment>
+  );
+};
+
+export default InitialPagination
