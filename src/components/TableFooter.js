@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Pagination from "./Pagination";
 import ADPagination from "./ADPagination";
 
@@ -19,19 +19,22 @@ const TableFooter = ({
   onPageChange,
   onPageBlur,
 }) => {
-  props.config.show_info && props.config.show_pagination ? (
+
+  const config = useContext(ConfigContext);
+
+  config.show_info && config.show_pagination ? (
     <div
       className="row table-foot asrt-table-foot"
       id={id ? id + "-table-foot" : ""}
     >
       <div className="col-md-6">
-        {props.config.show_info ? paginationInfo : null}
+        {config.show_info ? paginationInfo : null}
       </div>
       <div className="col-md-6 pull-right text-right">
-        {props.config.show_pagination ? (
+        {config.show_pagination ? (
           <nav aria-label="Page navigation" className="pull-right">
             <ul className="pagination justify-content-end asrt-pagination">
-              {props.config.pagination == "basic" ? (
+              {config.pagination == "basic" ? (
                 <Pagination
                   config={config}
                   isFirst={isFirst}

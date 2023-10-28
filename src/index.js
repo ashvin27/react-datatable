@@ -6,7 +6,7 @@
  * @date           14 Dec, 2018
  */
 
-import React, { Component } from 'react';
+import React, { Component, createContext, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import _ from 'lodash';
 import './assets/css/style.css';
@@ -28,43 +28,13 @@ class ReactDatatable extends Component {
     this.filterRecords = this.filterRecords.bind(this);
     this.filterData = this.filterData.bind(this);
     this.sortRecords = this.sortRecords.bind(this);
-    this.config = {
-      button: {
-        excel: (props.config && props.config.button && props.config.button.excel) ? props.config.button.excel : false,
-        print: (props.config && props.config.button && props.config.button.print) ? props.config.button.print : false,
-        csv: (props.config && props.config.button && props.config.button.csv) ? props.config.button.csv : false,
-        extra : (props.config && props.config.button && props.config.button.extra) ? props.config.button.extra : false,
-      },
-      filename: (props.config && props.config.filename) ? props.config.filename : "table",
-      key_column: props.config && props.config.key_column ? props.config.key_column : "id",
-      language: {
-        length_menu: (props.config && props.config.language && props.config.language.length_menu) ? props.config.language.length_menu : "Show _MENU_ records per page",
-        filter: (props.config && props.config.language && props.config.language.filter) ? props.config.language.filter : "Search in records...",
-        info: (props.config && props.config.language && props.config.language.info) ? props.config.language.info : "Showing _START_ to _END_ of _TOTAL_ entries",
-        pagination: {
-          first: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.first) ? props.config.language.pagination.first : "First",
-          previous: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.previous) ? props.config.language.pagination.previous : "Previous",
-          next: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.next) ? props.config.language.pagination.next : "Next",
-          last: (props.config && props.config.language && props.config.language.pagination && props.config.language.pagination.last) ? props.config.language.pagination.last : "Last"
-        },
-        no_data_text: (props.config && props.config.language && props.config.language.no_data_text) ? props.config.language.no_data_text : 'No rows found',
-        loading_text: (props.config && props.config.language && props.config.language.loading_text) ? props.config.language.loading_text : "Loading..."
-      },
-      length_menu: (props.config && props.config.length_menu) ? props.config.length_menu : [10, 25, 50, 75, 100],
-      show_length_menu: (props.config.show_length_menu != undefined) ? props.config.show_length_menu : true,
-      show_filter: (props.config.show_filter != undefined) ? props.config.show_filter : true,
-      show_pagination: (props.config.show_pagination != undefined) ? props.config.show_pagination : true,
-      show_info: (props.config.show_info != undefined) ? props.config.show_info : true,
-      show_first: (props.config.show_first != undefined) ? props.config.show_first : true,
-      show_last: (props.config.show_last != undefined) ? props.config.show_last : true,
-      pagination: (props.config.pagination) ? props.config.pagination : 'basic'
-    };
+
     this.state = {
       is_temp_page: false,
       filter_value: "",
       page_size: (props.config.page_size) ? props.config.page_size : 10,
       page_number: 1,
-      sort: (props.config && props.config.sort) ? props.config.sort : false
+      sort: (config.sort) ? props.config.sort : false
     };
   }
 
@@ -608,3 +578,156 @@ ReactDatatable.defaultProps = {
 }
 
 export default ReactDatatable;
+
+
+export const ConfigContext = createContext({ 
+  button: {
+  excel: false,
+  print:   false,
+  csv:  false,
+  extra :  false,
+},
+filename:  "table",
+key_column: "id",
+language: {
+  length_menu: "Show _MENU_ records per page",
+  filter:  "Search in records...",
+  info:   "Showing _START_ to _END_ of _TOTAL_ entries",
+  pagination: {
+    first:  "First",
+    previous:"Previous",
+    next:  "Next",
+    last:  "Last"
+  },
+  no_data_text: 'No rows found',
+  loading_text:  "Loading..."
+},
+length_menu:  [10, 25, 50, 75, 100],
+show_length_menu:  true,
+show_filter:  true,
+show_pagination: true,
+show_info: true,
+show_first: true,
+show_last:  true,
+pagination: 'basic'
+});
+
+const ReactDatatable = ({id, className, cloumns, config, dynamic, records,total_record, onChange, onPageChange, onRowClicked}) => {
+  const [initialConfig] = useState(config);
+  return (
+    <ConfigContext.Provider value={initialConfig}>
+    <div className="as-react-table" id={id ? id + "-container" : ""}>
+    <TableHeader
+      id={id}
+      lengthMenuText={lengthMenuText}
+      recordLength={(dynamic) ? total_record : records.length}
+      filterRecords={this.filterRecords.bind(this)}
+      changePageSize={this.changePageSize.bind(this)}
+      exportToExcel={this.exportToExcel.bind(this)}
+      exportToCSV={this.exportToCSV.bind(this)}
+      exportToPDF={this.exportToPDF.bind(this)}
+      extraButtons={extraButtons}/>
+    <div className="row table-body asrt-table-body" style={style.table_body} id={(id) ? id + "-table-body" : ""}>
+      <div className="col-md-12">
+        <table className={className} id={id}>
+          <thead className={tHeadClassName ? tHeadClassName : ''}>
+            <tr>
+              {
+                columns.map((column, index) => {
+                  let classText = (column.sortable) ? "sortable " : "",
+                  width = (column.width) ? column.width : "",
+                  align = (column.align) ? column.align : "",
+                  sortOrder = "",
+                  columnStyle = {};
+                  if (column.sortable && this.state.sort.column == column.key) {
+                    sortOrder = this.state.sort.order;
+                    classText += (sortOrder) ? " " + sortOrder : "";
+                    columnStyle = (sortOrder == "asc") ? style.sort_asc : style.sort_desc;
+                  }
+
+                  classText += " text-" + align;
+                  if(column.TrOnlyClassName)
+                    classText += " " + column.TrOnlyClassName;
+                  return (<th
+                    key={(column.key) ? column.key : column.text}
+                    className={classText}
+                    width={width}
+                    style={columnStyle}
+                    onClick={event => this.sortColumn(event, column, sortOrder)}>
+                    {column.text}
+                  </th>);
+                })
+              }
+            </tr>
+          </thead>
+          <tbody>
+            {loading ? (
+              <tr>
+                <td colSpan={columns.length} className="asrt-td-loading" align="center">
+                  <div className="asrt-loading-textwrap">
+                    <span className="asrt-loading-text">
+                      {initialConfig.language.loading_text}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              (filterRecords.length) ? 
+                filterRecords.map((record, rowIndex) => {
+                  rowIndex = _.indexOf(records, record);
+                  return (
+                    <tr key={record[initialConfig.key_column]} onClick={(e) => onRowClicked(e, record, rowIndex)}>
+                      {
+                        columns.map((column, colIndex) => {
+                          if (column.cell && typeof column.cell === "function") {
+                            return (<td className={column.className} key={(column.key) ? column.key : column.text}>{column.cell(record,rowIndex)}</td>);
+                          }else if (record[column.key]) {
+                            return (<td className={column.className} key={(column.key) ? column.key : column.text}>
+                              {record[column.key]}
+                            </td>);
+                          }else {
+                            return <td className={column.className} key={(column.key) ? column.key : column.text}></td>
+                          }
+                        })
+                      }
+                    </tr>
+                  )
+                }) : 
+                (
+                  <tr>
+                    <td colSpan={columns.length} align="center">
+                      {initialConfig.language.no_data_text}
+                    </td>
+                  </tr>
+                )
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <TableFooter
+      id={id}
+      isFirst={isFirst}
+      isLast={isLast}
+      paginationInfo={paginationInfo}
+      pages={pages}
+      page_number={this.state.page_number}
+      is_temp_page={this.state.is_temp_page}
+      temp_page_number={this.state.temp_page_number}
+      firstPage={this.firstPage.bind(this)}
+      lastPage={this.lastPage.bind(this)}
+      previousPage={this.previousPage.bind(this)}
+      nextPage={this.nextPage.bind(this)}
+      goToPage={this.goToPage.bind(this)}
+      changePageSize={this.changePageSize.bind(this)}
+      onPageChange={this.onPageChange.bind(this)}
+      onPageBlur={this.onPageBlur.bind(this)}/>
+  </div>
+  </ConfigContext.Provider>
+  )
+
+
+
+
+  
+}
