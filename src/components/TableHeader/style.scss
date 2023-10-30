@@ -1,0 +1,16 @@
+.primary {
+    &_asrt-table-head {
+        display: flex;
+        justify-content: space-between;
+
+        &__tool_filter {
+            display: flex;
+            gap: 1rem;
+        }
+
+        &__table_tools {
+            display: flex;
+            gap: 0.25rem;
+        }
+    }
+}

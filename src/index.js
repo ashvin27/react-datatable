@@ -13,6 +13,7 @@ import './assets/css/style.css';
 import TableHeader from './components/TableHeader';
 import TableFooter from './components/TableFooter';
 import style from './style';
+import "./style/default.scss";
 
 class ReactDatatable extends Component {
 
