@@ -6,6 +6,6 @@
   ],
   "plugins": [
     ["@babel/plugin-transform-react-jsx"],
-    ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]
+    ["@babel/plugin-transform-private-property-in-object", { "loose": true }]
   ]
 }

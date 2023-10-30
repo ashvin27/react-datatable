@@ -1,0 +1,61 @@
+{
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "ecmaVersion": 6
+    },
+    "extends": [
+      "react-app",
+      "prettier",
+      "plugin:testing-library/react",
+      "plugin:css-import-order/recommended"
+    ],
+    "env": {
+      "jest": true,
+      "node": true,
+      "mocha": true
+    },
+    "rules": {
+      "linebreak-style": ["error", "unix"],
+      "import/prefer-default-export": "off",
+      "prettier/prettier": [
+        "error",
+        {
+          "arrowParens": "always",
+          "trailingComma": "all",
+          "endOfLine": "auto"
+        }
+      ],
+      "arrow-parens": ["error", "always"],
+      "comma-dangle": ["error", "always-multiline"],
+      "space-before-function-paren": [
+        "error",
+        { "anonymous": "always", "named": "never", "asyncArrow": "always" }
+      ],
+      "no-unused-vars": "error",
+      "no-unused-expressions": "off",
+      "@babel/no-unused-expressions": ["warn", { "allowShortCircuit": true }],
+      "import/no-anonymous-default-export": "off",
+      "testing-library/render-result-naming-convention": "off",
+      "testing-library/no-node-access": "off",
+      "testing-library/no-debug": "error",
+      "testing-library/no-render-in-setup": "off",
+      "no-console": ["error", { "allow": ["warn", "error", "info"] }],
+      "import/order": "error",
+      "no-nested-ternary": "error"
+    },
+    "plugins": [
+      "import",
+      "prettier",
+      "@babel",
+      "testing-library",
+      "css-import-order"
+    ],
+    "overrides": [
+      {
+        "files": ["ui-testing/**/*.js"],
+        "rules": {
+          "@babel/no-unused-expressions": "off"
+        }
+      }
+    ]
+}
