@@ -1,53 +1,74 @@
-import React from 'react';
-import Pagination from './Pagination';
-import ADPagination from './ADPagination';
+import React, { useContext } from "react";
+import Pagination from "./Pagination";
+import ADPagination from "./ADPagination";
 
-export default function TableFooter(props){
-    if(props.config.show_info==true || props.config.show_pagination==true){
-      return (
-        <div className="row table-foot asrt-table-foot" id={(props.id) ? props.id + "-table-foot" : ""}>
-          <div className="col-md-6">
-            {(props.config.show_info) ? props.paginationInfo : null}
-          </div>
-          <div className="col-md-6 pull-right text-right">
-            {(props.config.show_pagination) ? (
-              <nav aria-label="Page navigation" className="pull-right">
-                <ul className="pagination justify-content-end asrt-pagination">
-                  {props.config.pagination == "basic" ? (
-                    <Pagination
-                      config={props.config}
-                      isFirst={props.isFirst}
-                      isLast={props.isLast}
-                      pages={props.pages}
-                      page_number={props.page_number}
-                      is_temp_page={props.is_temp_page}
-                      temp_page_number={props.temp_page_number}
-                      previousPage={props.previousPage}
-                      firstPage={props.firstPage}
-                      nextPage={props.nextPage}
-                      lastPage={props.lastPage}
-                      goToPage={props.goToPage}
-                      onPageChange={props.onPageChange}
-                      onPageBlur={props.onPageBlur} />
-                  ) : (
-                  <ADPagination
-                    language={props.config.language}
-                    isFirst={props.isFirst}
-                    isLast={props.isLast}
-                    pages={props.pages}
-                    page_number={props.page_number}
-                    previousPage={props.previousPage}
-                    nextPage={props.nextPage}
-                    goToPage={props.goToPage}/>
-                  )
-                  }
-                </ul>
-              </nav>
-            ) : null}
-          </div>
-        </div>
-      );
-    } else {
-      return null;
-    }
-  }
+const TableFooter = ({
+  id,
+  isFirst,
+  isLast,
+  paginationInfo,
+  pages,
+  page_number,
+  is_temp_page,
+  temp_page_number,
+  previousPage,
+  firstPage,
+  nextPage,
+  lastPage,
+  goToPage,
+  onPageChange,
+  onPageBlur,
+}) => {
+
+  const config = useContext(ConfigContext);
+
+  config.show_info && config.show_pagination ? (
+    <div
+      className="row table-foot asrt-table-foot"
+      id={id ? id + "-table-foot" : ""}
+    >
+      <div className="col-md-6">
+        {config.show_info ? paginationInfo : null}
+      </div>
+      <div className="col-md-6 pull-right text-right">
+        {config.show_pagination ? (
+          <nav aria-label="Page navigation" className="pull-right">
+            <ul className="pagination justify-content-end asrt-pagination">
+              {config.pagination == "basic" ? (
+                <Pagination
+                  config={config}
+                  isFirst={isFirst}
+                  isLast={isLast}
+                  pages={pages}
+                  page_number={page_number}
+                  is_temp_page={is_temp_page}
+                  temp_page_number={temp_page_number}
+                  previousPage={previousPage}
+                  firstPage={firstPage}
+                  nextPage={nextPage}
+                  lastPage={lastPage}
+                  goToPage={goToPage}
+                  onPageChange={onPageChange}
+                  onPageBlur={onPageBlur}
+                />
+              ) : (
+                <ADPagination
+                  language={config.language}
+                  isFirst={isFirst}
+                  isLast={isLast}
+                  pages={pages}
+                  page_number={page_number}
+                  previousPage={previousPage}
+                  nextPage={nextPage}
+                  goToPage={goToPage}
+                />
+              )}
+            </ul>
+          </nav>
+        ) : null}
+      </div>
+    </div>
+  ) : null;
+};
+
+export default TableFooter;
