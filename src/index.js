@@ -255,7 +255,7 @@ class ReactDatatable extends Component {
       navigator.msSaveOrOpenBlob(blob, filename);
     }else{
       // Create a link to the file
-      downloadLink.href = 'data:' + dataType + ', ' + tableHtml;
+      downloadLink.href = 'data:' + dataType + ';base64' + btoa(tableHtml);
       // Setting the file name
       downloadLink.download = filename;
       //triggering the function
