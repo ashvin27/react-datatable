@@ -33,7 +33,7 @@
     "deploy-storybook": "gh-pages -d storybook-static"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "webpack": "^5.88.2"
   },
   "peerDependencies": {
